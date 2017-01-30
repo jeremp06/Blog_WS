@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
  */
 public abstract class AbstractFacade<T> {
     private Class<T> entityClass;
-    @PersistenceContext(unitName = "BibliothequePU")
+    @PersistenceContext(unitName = "BlogPU")
     private EntityManager em;
 
     protected EntityManager getEntityManager() {
