@@ -76,3 +76,4 @@ nbactions.xml
 /CRM2016-war/dist/
 /dist/
 !/CRM2016-war/web/WEB-INF/lib/bootstrap-1.0.10.jar
+/WS_Blog/nbproject/private/
