@@ -1,0 +1,188 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>
+            AngularJS - REST Demo using $http service
+        </title>
+        <!-- Load AngularJS -->
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+        <script type="text/javascript">
+            var app = angular.module("UserManagement", []);
+         
+            //Controller Part
+            app.controller("UserManagementController", function($scope, $http) {
+         
+                //Initialize page with default data which is blank in this example
+                $scope.articles = [];
+                $scope.form = {
+                    id : -1,
+                    title : "",
+                    keywords : "",
+                    photo : "",
+                    position_longitude : "",
+                    position_latitude : "",
+                    position_name : "",
+                    status : ""
+                };
+         
+                //Now load the data from server
+                _refreshPageData();
+         
+                //HTTP POST/PUT methods for add/edit employee
+                $scope.submitArticle = function() {
+         
+                    var method = "";
+                    var url = "";
+                    if ($scope.form.id == -1) {
+                        //Id is absent so add employee - POST operation
+                        method = "POST";
+                        url = 'http://localhost:8080/WS_Blog/webresources/entity.articles';
+                    } else {
+                        //If Id is present, it's edit operation - PUT operation
+                        method = "PUT";
+                        url = 'http://localhost:8080/WS_Blog/webresources/entity.articles/' + $scope.form.id;
+                    }
+         
+                    $http({
+                        method : method,
+                        url : url,
+                        data : angular.toJson($scope.form),
+                        headers : {
+                            'Content-Type' : 'application/json'
+                        }
+                    }).then( _success, _error );
+                };
+         
+                //HTTP DELETE- delete employee by Id
+                $scope.removeArticle = function(article) {
+                    $http({
+                        method : 'DELETE',
+                        url : 'http://localhost:8080/WS_Blog/webresources/entity.articles' + article.id
+                    }).then(_success, _error);
+                };
+ 
+                //In case of edit employee, populate form with employee data
+                $scope.editArticle = function(article) {
+                    $scope.form.id = article.id;
+                    $scope.form.title = article.title;
+                    $scope.form.keywords = article.keywords;
+                    $scope.form.photo = article.photo;
+                    $scope.form.position_longitude = article.position_longitude;
+                    $scope.form.position_latitude = article.position_latitude;
+                    $scope.form.position_name = article.position_name;
+                    $scope.form.status = article.status;
+                };
+         
+                /* Private Methods */
+                //HTTP GET- get all employees collection
+                function _refreshPageData() {
+                    $http({
+                        method : 'GET',
+                        url : 'http://localhost:8080/WS_Blog/webresources/entity.articles'
+                    }).then(function successCallback(response) {
+                        $scope.articles = response.data;
+                    }, function errorCallback(response) {
+                        console.log(response.statusText);
+                    });
+                }
+         
+                function _success(response) {
+                    _refreshPageData();
+                    _clearForm()
+                }
+         
+                function _error(response) {
+                    console.log(response.statusText);
+                }
+         
+                //Clear the form
+                function _clearForm() {
+                    $scope.form.title = "";
+                    $scope.form.keywords = "";
+                    $scope.form.photo = "";
+                    $scope.form.position_longitude = "";
+                    $scope.form.position_latitude = "";
+                    $scope.form.position_name = "";
+                    $scope.form.status = "";
+                    $scope.form.id = -1;
+                };
+            });
+        </script>
+    <head>
+    <body ng-app="UserManagement" ng-controller="UserManagementController">
+         <h1>
+            AngularJS - Use $http to invoke RESTful APIs
+        </h1>
+ 
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Mots-clés</th>
+                <th>Photo</th>
+                <th>Longitude</th>
+                <th>Latitude</th>
+                <th>Lieu</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+ 
+            <tr ng-repeat="article in articles">
+                <td>{{ article.id }}</td>
+                <td>{{ article.title }}</td>
+                <td>{{ article.keywords }}</td>
+                <td>{{ article.photo }}</td>
+                <td>{{ article.position_longitude }}</td>
+                <td>{{ article.position_latitude }}</td>
+                <td>{{ article.position_name }}</td>
+                <td>{{ article.status }}</td>
+                <td><a ng-click="editArticle( article )" class="button">Edit</a> | <a ng-click="removeArticle( article )" class="button">Remove</a></td>
+            </tr>
+ 
+        </table>
+ 
+        <h2>Add/Edit Articles</h2>
+ 
+        <form ng-submit="submitArticle()">
+            <table>
+                <tr>
+                    <td>Id</td>
+                    <td><input type="number" ng-model="form.id" disabled/></td>
+                </tr>
+                <tr>
+                    <td>Titre</td>
+                    <td><input type="text" ng-model="form.title" size="60" /></td>
+                </tr>
+                <tr>
+                    <td>Mots-clés</td>
+                    <td><input type="text" ng-model="form.keywords" size="60" /></td>
+                </tr>
+                <tr>
+                    <td>Photo</td>
+                    <td><input type="text" ng-model="form.photo" size="60" /></td>
+                </tr>
+                <tr>
+                    <td>Longitude</td>
+                    <td><input type="text" ng-model="form.position_longitude" size="60" /></td>
+                </tr>
+                <tr>
+                    <td>Latitude</td>
+                    <td><input type="text" ng-model="form.position_latitude" size="60" /></td>
+                </tr>
+                <tr>
+                    <td>Lieu</td>
+                    <td><input type="text" ng-model="form.position_name" size="60" /></td>
+                </tr>
+                <tr>
+                    <td>Statut</td>
+                    <td><input type="text" ng-model="form.status" size="60" /></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input type="submit" value="Submit" /></td>
+                </tr>
+            </table>
+        </form>
+ 
+    </body>
+</html>
