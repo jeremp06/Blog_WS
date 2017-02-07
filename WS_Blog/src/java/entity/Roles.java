@@ -51,13 +51,8 @@ public class Roles implements Serializable {
     @Size(max = 255)
     @Column(name = "NAME")
     private String name;
-    @JoinTable(name = "ROLES_UTILISATEURS", joinColumns = {
-        @JoinColumn(name = "ROLES_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "USERS_ID", referencedColumnName = "ID")})
-    @ManyToMany
-    private Collection<Utilisateurs> utilisateursCollection;
     @OneToMany(mappedBy = "roleId")
-    private Collection<Utilisateurs> utilisateursCollection1;
+    private Collection<Utilisateurs> utilisateursCollection;
 
     public Roles() {
     }
@@ -97,15 +92,6 @@ public class Roles implements Serializable {
 
     public void setUtilisateursCollection(Collection<Utilisateurs> utilisateursCollection) {
         this.utilisateursCollection = utilisateursCollection;
-    }
-
-    @XmlTransient
-    public Collection<Utilisateurs> getUtilisateursCollection1() {
-        return utilisateursCollection1;
-    }
-
-    public void setUtilisateursCollection1(Collection<Utilisateurs> utilisateursCollection1) {
-        this.utilisateursCollection1 = utilisateursCollection1;
     }
 
     @Override

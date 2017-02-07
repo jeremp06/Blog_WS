@@ -15,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -73,10 +72,8 @@ public class Utilisateurs implements Serializable {
     @Size(max = 255)
     @Column(name = "USERNAME")
     private String username;
-    @ManyToMany(mappedBy = "utilisateursCollection")
+    @OneToMany(mappedBy = "utilisateur")
     private Collection<Comments> commentsCollection;
-    @ManyToMany(mappedBy = "utilisateursCollection")
-    private Collection<Roles> rolesCollection;
     @OneToMany(mappedBy = "authorsId")
     private Collection<Comments> commentsCollection1;
     @JoinColumn(name = "ARTICLE_ID", referencedColumnName = "ID")
@@ -166,13 +163,12 @@ public class Utilisateurs implements Serializable {
         this.commentsCollection = commentsCollection;
     }
 
-    @XmlTransient
-    public Collection<Roles> getRolesCollection() {
-        return rolesCollection;
+    public Roles getRole() {
+        return roleId;
     }
 
-    public void setRolesCollection(Collection<Roles> rolesCollection) {
-        this.rolesCollection = rolesCollection;
+    public void setRole(Roles role) {
+        this.roleId = role;
     }
 
     @XmlTransient
