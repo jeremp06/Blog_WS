@@ -57,9 +57,6 @@ public class Comments implements Serializable {
     @JoinColumn(name = "ARTICLE_ID", referencedColumnName = "ID")
     @ManyToOne
     private Articles articleId;
-    @JoinColumn(name = "AUTHORS_ID", referencedColumnName = "ID")
-    @ManyToOne
-    private Utilisateurs authorsId;
 
     public Comments() {
     }
@@ -106,14 +103,6 @@ public class Comments implements Serializable {
 
     public void setArticleId(Articles articleId) {
         this.articleId = articleId;
-    }
-
-    public Utilisateurs getAuthorsId() {
-        return authorsId;
-    }
-
-    public void setAuthorsId(Utilisateurs authorsId) {
-        this.authorsId = authorsId;
     }
 
     @Override

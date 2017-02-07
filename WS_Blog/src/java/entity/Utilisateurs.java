@@ -74,11 +74,8 @@ public class Utilisateurs implements Serializable {
     private String username;
     @OneToMany(mappedBy = "utilisateur")
     private Collection<Comments> commentsCollection;
-    @OneToMany(mappedBy = "authorsId")
-    private Collection<Comments> commentsCollection1;
-    @JoinColumn(name = "ARTICLE_ID", referencedColumnName = "ID")
-    @ManyToOne
-    private Articles articleId;
+    @OneToMany(mappedBy = "utilisateur")
+    private Collection<Articles> articlesCollection;
     @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")
     @ManyToOne
     private Roles roleId;
@@ -171,21 +168,12 @@ public class Utilisateurs implements Serializable {
         this.roleId = role;
     }
 
-    @XmlTransient
-    public Collection<Comments> getCommentsCollection1() {
-        return commentsCollection1;
+    public Collection<Articles> getArticlesCollection() {
+        return articlesCollection;
     }
 
-    public void setCommentsCollection1(Collection<Comments> commentsCollection1) {
-        this.commentsCollection1 = commentsCollection1;
-    }
-
-    public Articles getArticleId() {
-        return articleId;
-    }
-
-    public void setArticleId(Articles articleId) {
-        this.articleId = articleId;
+    public void setArticlesCollection(Collection<Articles> articlesCollection) {
+        this.articlesCollection = articlesCollection;
     }
 
     public Roles getRoleId() {
