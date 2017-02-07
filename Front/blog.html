@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Blog it !</title>
+<title>Moderna - Bootstrap 3 flat corporate template</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="" />
 <meta name="author" content="http://bootstraptaste.com" />
@@ -24,112 +23,6 @@
     Author: BootstrapMade
     Author URL: https://bootstrapmade.com
 ======================================================= -->
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-<script type="text/javascript">
-            var app = angular.module("UserManagement", []);
-         
-            //Controller Part
-            app.controller("UserManagementController", function($scope, $http) {
-         
-                //Initialize page with default data which is blank in this example
-                $scope.articles = [];
-                $scope.form = {
-                    id : -1,
-                    title : "",
-                    keywords : "",
-                    photo : "",
-                    position_longitude : "",
-                    position_latitude : "",
-                    position_name : "",
-                    content : "",
-                    status : ""
-                };
-         
-                //Now load the data from server
-                _refreshPageData();
-         
-                //HTTP POST/PUT methods for add/edit employee
-                $scope.submitArticle = function() {
-         
-                    var method = "";
-                    var url = "";
-                    if ($scope.form.id == -1) {
-                        //Id is absent so add employee - POST operation
-                        method = "POST";
-                        url = 'http://localhost:8080/WS_Blog/webresources/entity.articles';
-                    } else {
-                        //If Id is present, it's edit operation - PUT operation
-                        method = "PUT";
-                        url = 'http://localhost:8080/WS_Blog/webresources/entity.articles/' + $scope.form.id;
-                    }
-         
-                    $http({
-                        method : method,
-                        url : url,
-                        data : angular.toJson($scope.form),
-                        headers : {
-                            'Content-Type' : 'application/json'
-                        }
-                    }).then( _success, _error );
-                };
-         
-                //HTTP DELETE- delete employee by Id
-                $scope.removeArticle = function(article) {
-                    $http({
-                        method : 'DELETE',
-                        url : 'http://localhost:8080/WS_Blog/webresources/entity.articles' + article.id
-                    }).then(_success, _error);
-                };
- 
-                //In case of edit employee, populate form with employee data
-                $scope.editArticle = function(article) {
-                    $scope.form.id = article.id;
-                    $scope.form.title = article.title;
-                    $scope.form.keywords = article.keywords;
-                    $scope.form.photo = article.photo;
-                    $scope.form.position_longitude = article.position_longitude;
-                    $scope.form.position_latitude = article.position_latitude;
-                    $scope.form.position_name = article.position_name;
-                    $scope.form.content = article.content;
-                    $scope.form.status = article.status;
-                };
-         
-                /* Private Methods */
-                //HTTP GET- get all employees collection
-                function _refreshPageData() {
-                    $http({
-                        method : 'GET',
-                        url : 'http://localhost:8080/WS_Blog/webresources/entity.articles'
-                    }).then(function successCallback(response) {
-                        $scope.articles = response.data;
-                    }, function errorCallback(response) {
-                        console.log(response.statusText);
-                    });
-                }
-         
-                function _success(response) {
-                    _refreshPageData();
-                    _clearForm()
-                }
-         
-                function _error(response) {
-                    console.log(response.statusText);
-                }
-         
-                //Clear the form
-                function _clearForm() {
-                    $scope.form.title = "";
-                    $scope.form.keywords = "";
-                    $scope.form.photo = "";
-                    $scope.form.position_longitude = "";
-                    $scope.form.position_latitude = "";
-                    $scope.form.position_name = "";
-                    $scope.form.content = "";
-                    $scope.form.status = "";
-                    $scope.form.id = -1;
-                };
-            });
-        </script>
 
 </head>
 <body>
@@ -144,14 +37,22 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.html">Blog<span>it</span> !</a>
+                    <a class="navbar-brand" href="index.html"><span>M</span>oderna</a>
                 </div>
                 <div class="navbar-collapse collapse ">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="index.html">Home</a></li>
-                        <li><a href="portfolio.html">About</a></li>
+                        <li><a href="index.html">Home</a></li>
+                        <li class="dropdown ">
+                            <a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">Features <b class=" icon-angle-down"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="typography.html">Typography</a></li>
+                                <li><a href="components.html">Components</a></li>
+								<li><a href="pricingbox.html">Pricing box</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="portfolio.html">Portfolio</a></li>
+                        <li class="active"><a href="blog.html">Blog</a></li>
                         <li><a href="contact.html">Contact</a></li>
-                        <li><a href="connexion.html"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a></li>
                     </ul>
                 </div>
             </div>
@@ -171,30 +72,112 @@
 	</div>
 	</section>
 	<section id="content">
-	<div class="container" ng-app="UserManagement" ng-controller="UserManagementController">
+	<div class="container">
 		<div class="row">
 			<div class="col-lg-8">
-				<article ng-repeat="article in articles">
+				<article>
 						<div class="post-image">
 							<div class="post-heading">
-								<h3><a href="#">{{ article.title }}</a></h3>
+								<h3><a href="#">This is an example of standard post format</a></h3>
 							</div>
-							<img src="{{ article.photo }}" alt="" />
+							<img src="img/dummies/blog/img1.jpg" alt="" />
 						</div>
 						<p>
-							 {{ article.content }}
+							 Qui ut ceteros comprehensam. Cu eos sale sanctus eligendi, id ius elitr saperet, ocurreret pertinacia pri an. No mei nibh consectetuer, semper laoreet perfecto ad qui, est rebum nulla argumentum ei. Fierent adipisci iracundia est ei, usu timeam persius ea. Usu ea justo malis, pri quando everti electram ei, ex homero omittam salutatus sed.
 						</p>
 						<div class="bottom-article">
 							<ul class="meta-post">
-								<li><i class="icon-calendar"></i><a href="#"> {{ article.published_on }}</a></li>
+								<li><i class="icon-calendar"></i><a href="#"> Mar 23, 2013</a></li>
 								<li><i class="icon-user"></i><a href="#"> Admin</a></li>
+								<li><i class="icon-folder-open"></i><a href="#"> Blog</a></li>
 								<li><i class="icon-comments"></i><a href="#">4 Comments</a></li>
 							</ul>
+							<a href="#" class="pull-right">Continue reading <i class="icon-angle-right"></i></a>
 						</div>
 				</article>
- 
-        </table>
-        			</div>
+				<article>
+						<div class="post-slider">
+							<div class="post-heading">
+								<h3><a href="#">This is an example of slider post format</a></h3>
+							</div>
+							<!-- start flexslider -->
+							<div id="post-slider" class="flexslider">
+								<ul class="slides">
+									<li>
+									<img src="img/dummies/blog/img1.jpg" alt="" />
+									</li>
+									<li>
+									<img src="img/dummies/blog/img2.jpg" alt="" />
+									</li>
+									<li>
+									<img src="img/dummies/blog/img3.jpg" alt="" />
+									</li>
+								</ul>
+							</div>
+							<!-- end flexslider -->
+						</div>
+						<p>
+							 Qui ut ceteros comprehensam. Cu eos sale sanctus eligendi, id ius elitr saperet, ocurreret pertinacia pri an. No mei nibh consectetuer, semper laoreet perfecto ad qui, est rebum nulla argumentum ei. Fierent adipisci iracundia est ei, usu timeam persius ea. Usu ea justo malis, pri quando everti electram ei, ex homero omittam salutatus sed.
+						</p>
+						<div class="bottom-article">
+							<ul class="meta-post">
+								<li><i class="icon-calendar"></i><a href="#"> Mar 23, 2013</a></li>
+								<li><i class="icon-user"></i><a href="#"> Admin</a></li>
+								<li><i class="icon-folder-open"></i><a href="#"> Blog</a></li>
+								<li><i class="icon-comments"></i><a href="#">4 Comments</a></li>
+							</ul>
+							<a href="#" class="pull-right">Continue reading <i class="icon-angle-right"></i></a>
+						</div>
+				</article>
+				<article>
+						<div class="post-quote">
+							<div class="post-heading">
+								<h3><a href="#">Nice example of quote post format below</a></h3>
+							</div>
+							<blockquote>
+								<i class="icon-quote-left"></i> Lorem ipsum dolor sit amet, ei quod constituto qui. Summo labores expetendis ad quo, lorem luptatum et vis. No qui vidisse signiferumque...
+							</blockquote>
+						</div>
+						<div class="bottom-article">
+							<ul class="meta-post">
+								<li><i class="icon-calendar"></i><a href="#"> Mar 23, 2013</a></li>
+								<li><i class="icon-user"></i><a href="#"> Admin</a></li>
+								<li><i class="icon-folder-open"></i><a href="#"> Blog</a></li>
+								<li><i class="icon-comments"></i><a href="#">4 Comments</a></li>
+							</ul>
+							<a href="#" class="pull-right">Continue reading <i class="icon-angle-right"></i></a>
+						</div>
+				</article>
+				<article>
+						<div class="post-video">
+							<div class="post-heading">
+								<h3><a href="#">Amazing video post format here</a></h3>
+							</div>
+							<div class="video-container">
+								<iframe src="http://player.vimeo.com/video/30585464?title=0&amp;byline=0">
+								</iframe>
+							</div>
+						</div>
+						<p>
+							 Qui ut ceteros comprehensam. Cu eos sale sanctus eligendi, id ius elitr saperet, ocurreret pertinacia pri an. No mei nibh consectetuer, semper laoreet perfecto ad qui, est rebum nulla argumentum ei. Fierent adipisci iracundia est ei, usu timeam persius ea. Usu ea justo malis, pri quando everti electram ei.
+						</p>
+						<div class="bottom-article">
+							<ul class="meta-post">
+								<li><i class="icon-calendar"></i><a href="#"> Mar 23, 2013</a></li>
+								<li><i class="icon-user"></i><a href="#"> Admin</a></li>
+								<li><i class="icon-folder-open"></i><a href="#"> Blog</a></li>
+								<li><i class="icon-comments"></i><a href="#">4 Comments</a></li>
+							</ul>
+							<a href="#" class="pull-right">Continue reading <i class="icon-angle-right"></i></a>
+						</div>
+				</article>
+				<div id="pagination">
+					<span class="all">Page 1 of 3</span>
+					<span class="current">1</span>
+					<a href="#" class="inactive">2</a>
+					<a href="#" class="inactive">3</a>
+				</div>
+			</div>
 			<div class="col-lg-4">
 				<aside class="right-sidebar">
 				<div class="widget">

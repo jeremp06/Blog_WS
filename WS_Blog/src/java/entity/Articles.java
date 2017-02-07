@@ -65,6 +65,9 @@ public class Articles implements Serializable {
     @Column(name = "POSITION_NAME")
     private String positionName;
     @Size(max = 255)
+    @Column(name = "CONTENT")
+    private String content;
+    @Size(max = 255)
     @Column(name = "PUBLISHED_ON")
     private String publishedOn;
     @Column(name = "STATUS")
@@ -90,6 +93,14 @@ public class Articles implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getKeywords() {
