@@ -15,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -73,15 +72,10 @@ public class Utilisateurs implements Serializable {
     @Size(max = 255)
     @Column(name = "USERNAME")
     private String username;
-    @ManyToMany(mappedBy = "utilisateursCollection")
+    @OneToMany(mappedBy = "utilisateur")
     private Collection<Comments> commentsCollection;
-    @ManyToMany(mappedBy = "utilisateursCollection")
-    private Collection<Roles> rolesCollection;
-    @OneToMany(mappedBy = "authorsId")
-    private Collection<Comments> commentsCollection1;
-    @JoinColumn(name = "ARTICLE_ID", referencedColumnName = "ID")
-    @ManyToOne
-    private Articles articleId;
+    @OneToMany(mappedBy = "utilisateur")
+    private Collection<Articles> articlesCollection;
     @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")
     @ManyToOne
     private Roles roleId;
@@ -166,30 +160,20 @@ public class Utilisateurs implements Serializable {
         this.commentsCollection = commentsCollection;
     }
 
-    @XmlTransient
-    public Collection<Roles> getRolesCollection() {
-        return rolesCollection;
+    public Roles getRole() {
+        return roleId;
     }
 
-    public void setRolesCollection(Collection<Roles> rolesCollection) {
-        this.rolesCollection = rolesCollection;
+    public void setRole(Roles role) {
+        this.roleId = role;
     }
 
-    @XmlTransient
-    public Collection<Comments> getCommentsCollection1() {
-        return commentsCollection1;
+    public Collection<Articles> getArticlesCollection() {
+        return articlesCollection;
     }
 
-    public void setCommentsCollection1(Collection<Comments> commentsCollection1) {
-        this.commentsCollection1 = commentsCollection1;
-    }
-
-    public Articles getArticleId() {
-        return articleId;
-    }
-
-    public void setArticleId(Articles articleId) {
-        this.articleId = articleId;
+    public void setArticlesCollection(Collection<Articles> articlesCollection) {
+        this.articlesCollection = articlesCollection;
     }
 
     public Roles getRoleId() {

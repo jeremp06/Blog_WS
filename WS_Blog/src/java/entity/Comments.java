@@ -6,7 +6,6 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -15,8 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,7 +23,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -55,17 +51,12 @@ public class Comments implements Serializable {
     @Column(name = "COMMENTED_DATE")
     @Temporal(TemporalType.DATE)
     private Date commentedDate;
-    @JoinTable(name = "UTILISATEURS_COMMENTS", joinColumns = {
-        @JoinColumn(name = "COMMENTS_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "UTILISATEURS_ID", referencedColumnName = "ID")})
-    @ManyToMany
-    private Collection<Utilisateurs> utilisateursCollection;
+    @JoinColumn(name = "UTILISATEUR_ID", referencedColumnName = "ID")
+    @ManyToOne
+    private Utilisateurs utilisateur;
     @JoinColumn(name = "ARTICLE_ID", referencedColumnName = "ID")
     @ManyToOne
     private Articles articleId;
-    @JoinColumn(name = "AUTHORS_ID", referencedColumnName = "ID")
-    @ManyToOne
-    private Utilisateurs authorsId;
 
     public Comments() {
     }
@@ -98,13 +89,12 @@ public class Comments implements Serializable {
         this.commentedDate = commentedDate;
     }
 
-    @XmlTransient
-    public Collection<Utilisateurs> getUtilisateursCollection() {
-        return utilisateursCollection;
+    public Utilisateurs getUtilisateur() {
+        return utilisateur;
     }
 
-    public void setUtilisateursCollection(Collection<Utilisateurs> utilisateursCollection) {
-        this.utilisateursCollection = utilisateursCollection;
+    public void setUtilisateur(Utilisateurs utilisateur) {
+        this.utilisateur = utilisateur;
     }
 
     public Articles getArticleId() {
@@ -113,14 +103,6 @@ public class Comments implements Serializable {
 
     public void setArticleId(Articles articleId) {
         this.articleId = articleId;
-    }
-
-    public Utilisateurs getAuthorsId() {
-        return authorsId;
-    }
-
-    public void setAuthorsId(Utilisateurs authorsId) {
-        this.authorsId = authorsId;
     }
 
     @Override

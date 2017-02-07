@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -42,6 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Articles.findByStatus", query = "SELECT a FROM Articles a WHERE a.status = :status"),
     @NamedQuery(name = "Articles.findByTitle", query = "SELECT a FROM Articles a WHERE a.title = :title")})
 public class Articles implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -77,8 +80,9 @@ public class Articles implements Serializable {
     private String title;
     @OneToMany(mappedBy = "articleId")
     private Collection<Comments> commentsCollection;
-    @OneToMany(mappedBy = "articleId")
-    private Collection<Utilisateurs> utilisateursCollection;
+    @ManyToOne
+    @JoinColumn(name = "UTILISATEUR_ID", referencedColumnName = "ID")
+    private Utilisateurs utilisateur;
 
     public Articles() {
     }
@@ -177,12 +181,12 @@ public class Articles implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Utilisateurs> getUtilisateursCollection() {
-        return utilisateursCollection;
+    public Utilisateurs getUtilisateur() {
+        return utilisateur;
     }
 
-    public void setUtilisateursCollection(Collection<Utilisateurs> utilisateursCollection) {
-        this.utilisateursCollection = utilisateursCollection;
+    public void setUtilisateursCollection(Utilisateurs utilisateur) {
+        this.utilisateur = utilisateur;
     }
 
     @Override
@@ -209,5 +213,5 @@ public class Articles implements Serializable {
     public String toString() {
         return "entity.Articles[ id=" + id + " ]";
     }
-    
+
 }
