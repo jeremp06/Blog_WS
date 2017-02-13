@@ -59,6 +59,16 @@ public class UtilisateursFacadeREST extends AbstractFacade<Utilisateurs> {
     public Utilisateurs find(@PathParam("id") Long id) {
         return super.find(id);
     }
+    
+//    @POST
+//    @Path("connexion")
+//    @Consumes({"application/xml", "application/json"})
+//    public Utilisateurs connexion(String id, String password) {
+//        Utilisateurs u = super.find(id);
+//        if(password.equals(u.getPassword()))
+//            return u;
+//        return null;
+//    }
 
     @GET
     @Override

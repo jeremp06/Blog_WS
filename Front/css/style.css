@@ -790,6 +790,10 @@ blockquote cite a:visited 				{ color:#555; }
 	color: #eee;
 }
 
+.button {
+ cursor:pointer;
+}
+
 /* --- list style --- */
 
 ul.general {
@@ -1530,7 +1534,7 @@ ul.time-post li.time{
 ================================ */
 
 footer{
-	padding:50px 0 0 0;
+	padding:10px 0 0 0;
 	color:#f8f8f8;
 }
 

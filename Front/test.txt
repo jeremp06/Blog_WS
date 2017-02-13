@@ -1,4 +1,39 @@
+USERS
+
+[
+{
+"about":"Etudiant en NTDP à la MIAGE de Sophia-Antipolis", "firstname":"Jérémy", "lastname":"PINET","username":"jp","password":"jp"
+},
 
 {
-"title":"YO3", "keywords":"mots", "photo":"photo", "position_longitude":"", "position_latitude":"","position_name":"name", "status":"status"
+"about":"Etudiant en NTDP à la MIAGE de Sophia-Antipolis", "firstname":"Brenda", "lastname":"BARBE","username":"bb","password":"bb"
+},
+
+{
+"about":"Etudiant en SIRIS à la MIAGE de Sophia-Antipolis", "firstname":"Sebastien", "lastname":"LANTIER","username":"sl","password":"sl"
+},
+
+{
+"about":"Etudiant en SIRIS à la MIAGE de Sophia-Antipolis", "firstname":"Steven", "lastname":"GUERY","username":"sg","password":"sg"
+},
+
+{
+"about":"Professeur à la MIAGE de Sophia-Antipolis", "firstname":"Edouard", "lastname":"AMOSSE","username":"ea","password":"ea"
 }
+]
+
+ARTICLES
+
+[
+{
+"title":"Nautulus, les bateaux à portée de main", "keywords":"bateaux", "content":"Nautulus est un site permettant de trouver de trouver un bâteau. Une fois que vous avez trouver celui qui vous intéresse, il est possible de le louer.", "photo":"./img/works/1.jpg", "position_longitude":"7.116", "position_latitude":"43.583","position_name":"Antibes", "status":"status", "user_id":"1"
+},
+
+{
+"title":"Step1 Expert, l'outil des futurs médecins", "keywords":"médecins", "content":"Cet outil est destiné aux étudiants en médecine. Il leur permettra d'étudier différents cas avec de réelles mise en situation.", "photo":"./img/works/2.jpg", "position_longitude":"7.25", "position_latitude":"43.70","position_name":"Nice", "status":"status", "user_id":"1"
+},
+
+{
+"title":"Suivi de santé", "keywords":"santé", "photo":"./img/works/3.jpg", "content":"Cette application mobile est destiné à tous les citoyens souhaitant prendre soin de leur santé. Des graphiques permettent d'avoir un aperçu rapide et synthétique des différentes données entrées.", "position_longitude":"2.35", "position_latitude":"48.853","position_name":"Paris", "status":"status", "user_id":"2"
+}
+]
