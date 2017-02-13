@@ -16,8 +16,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -34,16 +32,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "UTILISATEURS")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Utilisateurs.findAll", query = "SELECT u FROM Utilisateurs u"),
-    @NamedQuery(name = "Utilisateurs.findById", query = "SELECT u FROM Utilisateurs u WHERE u.id = :id"),
-    @NamedQuery(name = "Utilisateurs.findByAbout", query = "SELECT u FROM Utilisateurs u WHERE u.about = :about"),
-    @NamedQuery(name = "Utilisateurs.findByFirstname", query = "SELECT u FROM Utilisateurs u WHERE u.firstname = :firstname"),
-    @NamedQuery(name = "Utilisateurs.findByLastname", query = "SELECT u FROM Utilisateurs u WHERE u.lastname = :lastname"),
-    @NamedQuery(name = "Utilisateurs.findByLastConnected", query = "SELECT u FROM Utilisateurs u WHERE u.lastConnected = :lastConnected"),
-    @NamedQuery(name = "Utilisateurs.findByPassword", query = "SELECT u FROM Utilisateurs u WHERE u.password = :password"),
-    @NamedQuery(name = "Utilisateurs.findByStatus", query = "SELECT u FROM Utilisateurs u WHERE u.status = :status"),
-    @NamedQuery(name = "Utilisateurs.findByUsername", query = "SELECT u FROM Utilisateurs u WHERE u.username = :username")})
 public class Utilisateurs implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -65,12 +53,12 @@ public class Utilisateurs implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date lastConnected;
     @Size(max = 255)
-    @Column(name = "PASSWORD")
+    @Column(name = "PASSWORD",unique=true, nullable=false)
     private String password;
     @Column(name = "STATUS")
     private Integer status;
     @Size(max = 255)
-    @Column(name = "USERNAME")
+    @Column(name = "USERNAME",unique=true, nullable=false)
     private String username;
     @OneToMany(mappedBy = "utilisateur")
     private Collection<Comments> commentsCollection;

@@ -7,6 +7,9 @@ package service;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -21,6 +24,15 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
+     public T findUtilisateur(String username, String password) {
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery(entityClass);
+        Root<T> utilisateur = cq.from(entityClass);
+        cq.select(utilisateur).where(cb.and(cb.equal(utilisateur.get("username"), username), cb.equal(utilisateur.get("password"), password)));
+        return (T) getEntityManager().createQuery(cq).getSingleResult();
+    }
+    
     public void create(T entity) {
         getEntityManager().persist(entity);
     }

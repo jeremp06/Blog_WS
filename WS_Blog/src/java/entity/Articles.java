@@ -15,11 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.resource.spi.AuthenticationMechanism;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,17 +29,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "ARTICLES")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Articles.findAll", query = "SELECT a FROM Articles a"),
-    @NamedQuery(name = "Articles.findById", query = "SELECT a FROM Articles a WHERE a.id = :id"),
-    @NamedQuery(name = "Articles.findByKeywords", query = "SELECT a FROM Articles a WHERE a.keywords = :keywords"),
-    @NamedQuery(name = "Articles.findByPhoto", query = "SELECT a FROM Articles a WHERE a.photo = :photo"),
-    @NamedQuery(name = "Articles.findByPositionLatitude", query = "SELECT a FROM Articles a WHERE a.positionLatitude = :positionLatitude"),
-    @NamedQuery(name = "Articles.findByPositionLongitude", query = "SELECT a FROM Articles a WHERE a.positionLongitude = :positionLongitude"),
-    @NamedQuery(name = "Articles.findByPositionName", query = "SELECT a FROM Articles a WHERE a.positionName = :positionName"),
-    @NamedQuery(name = "Articles.findByPublishedOn", query = "SELECT a FROM Articles a WHERE a.publishedOn = :publishedOn"),
-    @NamedQuery(name = "Articles.findByStatus", query = "SELECT a FROM Articles a WHERE a.status = :status"),
-    @NamedQuery(name = "Articles.findByTitle", query = "SELECT a FROM Articles a WHERE a.title = :title")})
 public class Articles implements Serializable {
 
     private static final long serialVersionUID = 1L;

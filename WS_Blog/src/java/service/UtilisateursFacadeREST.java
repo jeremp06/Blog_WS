@@ -13,11 +13,13 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import jsonObject.Connexion;
 
 /**
  *
@@ -26,6 +28,7 @@ import javax.ws.rs.Produces;
 @Stateless
 @Path("entity.utilisateurs")
 public class UtilisateursFacadeREST extends AbstractFacade<Utilisateurs> {
+
     @PersistenceContext(unitName = "WS_BlogPU")
     private EntityManager em;
 
@@ -41,9 +44,9 @@ public class UtilisateursFacadeREST extends AbstractFacade<Utilisateurs> {
     }
 
     @PUT
-    @Path("{id}")
+    @Override
     @Consumes({"application/xml", "application/json"})
-    public void edit(@PathParam("id") Long id, Utilisateurs entity) {
+    public void edit(Utilisateurs entity) {
         super.edit(entity);
     }
 
@@ -59,16 +62,15 @@ public class UtilisateursFacadeREST extends AbstractFacade<Utilisateurs> {
     public Utilisateurs find(@PathParam("id") Long id) {
         return super.find(id);
     }
-    
-//    @POST
-//    @Path("connexion")
-//    @Consumes({"application/xml", "application/json"})
-//    public Utilisateurs connexion(String id, String password) {
-//        Utilisateurs u = super.find(id);
-//        if(password.equals(u.getPassword()))
-//            return u;
-//        return null;
-//    }
+
+    @POST
+    @Path("connexion")
+    @Consumes({"application/xml", "application/json"})
+    @Produces({"application/xml", "application/json"})
+    public Utilisateurs connexion(final Connexion connexion) {
+        return super.findUtilisateur(connexion.username, connexion.password);
+
+    }
 
     @GET
     @Override
@@ -95,5 +97,5 @@ public class UtilisateursFacadeREST extends AbstractFacade<Utilisateurs> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }
