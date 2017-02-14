@@ -5,6 +5,7 @@
  */
 package service;
 
+import entity.Articles;
 import entity.Utilisateurs;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -77,7 +78,12 @@ public class UtilisateursFacadeREST extends AbstractFacade<Utilisateurs> {
     public List<Utilisateurs> findAll() {
         return super.findAll();
     }
-
+    @GET
+    @Path("countArticle/{id}")
+    @Produces({"application/xml", "application/json"})
+    public int countArticle(@PathParam("id") long id) {
+        return super.find(id).getArticlesCollection().size();
+    }
     @GET
     @Path("status/{status}")
     @Produces({"application/xml", "application/json"})

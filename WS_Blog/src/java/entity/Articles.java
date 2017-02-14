@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -64,7 +65,7 @@ public class Articles implements Serializable {
     @Size(max = 255)
     @Column(name = "TITLE")
     private String title;
-    @OneToMany(mappedBy = "articleId")
+    @OneToMany(mappedBy = "articleId",cascade=CascadeType.PERSIST)
     private Collection<Comments> commentsCollection;
     @ManyToOne
     @JoinColumn(name = "UTILISATEUR_ID", referencedColumnName = "ID")

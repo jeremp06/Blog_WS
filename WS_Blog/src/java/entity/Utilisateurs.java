@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -60,9 +61,9 @@ public class Utilisateurs implements Serializable {
     @Size(max = 255)
     @Column(name = "USERNAME",unique=true, nullable=false)
     private String username;
-    @OneToMany(mappedBy = "utilisateur")
+    @OneToMany(mappedBy = "utilisateur",cascade=CascadeType.PERSIST)
     private Collection<Comments> commentsCollection;
-    @OneToMany(mappedBy = "utilisateur")
+    @OneToMany(mappedBy = "utilisateur",cascade=CascadeType.PERSIST)
     private Collection<Articles> articlesCollection;
     @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")
     @ManyToOne
