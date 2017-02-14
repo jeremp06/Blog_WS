@@ -46,10 +46,10 @@ public class Articles implements Serializable {
     private String photo;
     @Size(max = 255)
     @Column(name = "POSITION_LATITUDE")
-    private String positionLatitude;
+    private double positionLatitude;
     @Size(max = 255)
     @Column(name = "POSITION_LONGITUDE")
-    private String positionLongitude;
+    private double positionLongitude;
     @Size(max = 255)
     @Column(name = "POSITION_NAME")
     private String positionName;
@@ -109,19 +109,19 @@ public class Articles implements Serializable {
         this.photo = photo;
     }
 
-    public String getPositionLatitude() {
+    public double getPositionLatitude() {
         return positionLatitude;
     }
 
-    public void setPositionLatitude(String positionLatitude) {
+    public void setPositionLatitude(double positionLatitude) {
         this.positionLatitude = positionLatitude;
     }
 
-    public String getPositionLongitude() {
+    public double getPositionLongitude() {
         return positionLongitude;
     }
 
-    public void setPositionLongitude(String positionLongitude) {
+    public void setPositionLongitude(double positionLongitude) {
         this.positionLongitude = positionLongitude;
     }
 

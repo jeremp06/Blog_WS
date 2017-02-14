@@ -13,7 +13,6 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -77,6 +76,14 @@ public class UtilisateursFacadeREST extends AbstractFacade<Utilisateurs> {
     @Produces({"application/xml", "application/json"})
     public List<Utilisateurs> findAll() {
         return super.findAll();
+    }
+
+    @GET
+    @Path("status/{status}")
+    @Produces({"application/xml", "application/json"})
+    @Override
+    public List<Utilisateurs> findByStatus(@PathParam("status") long status) {
+        return super.findByStatus(status);
     }
 
     @GET

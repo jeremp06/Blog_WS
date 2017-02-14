@@ -6,6 +6,7 @@
 package service;
 
 import entity.Articles;
+import entity.Utilisateurs;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -26,6 +27,7 @@ import javax.ws.rs.Produces;
 @Stateless
 @Path("entity.articles")
 public class ArticlesFacadeREST extends AbstractFacade<Articles> {
+
     @PersistenceContext(unitName = "WS_BlogPU")
     private EntityManager em;
 
@@ -45,6 +47,14 @@ public class ArticlesFacadeREST extends AbstractFacade<Articles> {
     @Consumes({"application/xml", "application/json"})
     public void edit(@PathParam("id") Long id, Articles entity) {
         super.edit(entity);
+    }
+
+    @GET
+    @Path("status/{status}")
+    @Produces({"application/xml", "application/json"})
+    @Override
+    public List<Articles> findByStatus(@PathParam("status") long status) {
+        return super.findByStatus(status);
     }
 
     @DELETE
@@ -85,5 +95,5 @@ public class ArticlesFacadeREST extends AbstractFacade<Articles> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

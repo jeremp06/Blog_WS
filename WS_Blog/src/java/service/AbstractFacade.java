@@ -32,7 +32,14 @@ public abstract class AbstractFacade<T> {
         cq.select(utilisateur).where(cb.and(cb.equal(utilisateur.get("username"), username), cb.equal(utilisateur.get("password"), password)));
         return (T) getEntityManager().createQuery(cq).getSingleResult();
     }
-    
+    public List<T> findByStatus(long status) {
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery(entityClass);
+        Root<T> root = cq.from(entityClass);
+        cq.select(root).where(cb.equal(root.get("status"), status));
+        return getEntityManager().createQuery(cq).getResultList();
+    }
     public void create(T entity) {
         getEntityManager().persist(entity);
     }
