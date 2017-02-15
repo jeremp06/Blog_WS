@@ -20,9 +20,9 @@
                     title : "",
                     keywords : "",
                     photo : "",
-                    position_longitude : "",
-                    position_latitude : "",
-                    position_name : "",
+                    positionLongitude : "",
+                    positionLatitude : "",
+                    positionName : "",
                     status : ""
                 };
          
@@ -68,9 +68,9 @@
                     $scope.form.title = article.title;
                     $scope.form.keywords = article.keywords;
                     $scope.form.photo = article.photo;
-                    $scope.form.position_longitude = article.position_longitude;
-                    $scope.form.position_latitude = article.position_latitude;
-                    $scope.form.position_name = article.position_name;
+                    $scope.form.positionLongitude = article.positionLongitude;
+                    $scope.form.positionLatitude = article.positionLatitude;
+                    $scope.form.positionName = article.positionName;
                     $scope.form.status = article.status;
                 };
          
@@ -101,9 +101,9 @@
                     $scope.form.title = "";
                     $scope.form.keywords = "";
                     $scope.form.photo = "";
-                    $scope.form.position_longitude = "";
-                    $scope.form.position_latitude = "";
-                    $scope.form.position_name = "";
+                    $scope.form.positionLongitude = "";
+                    $scope.form.positionLatitude = "";
+                    $scope.form.positionName = "";
                     $scope.form.status = "";
                     $scope.form.id = -1;
                 };
@@ -133,9 +133,9 @@
                 <td>{{ article.title }}</td>
                 <td>{{ article.keywords }}</td>
                 <td>{{ article.photo }}</td>
-                <td>{{ article.position_longitude }}</td>
-                <td>{{ article.position_latitude }}</td>
-                <td>{{ article.position_name }}</td>
+                <td>{{ article.positionLongitude }}</td>
+                <td>{{ article.positionLatitude }}</td>
+                <td>{{ article.positionName }}</td>
                 <td>{{ article.status }}</td>
                 <td><a ng-click="editArticle( article )" class="button">Edit</a> | <a ng-click="removeArticle( article )" class="button">Remove</a></td>
             </tr>
@@ -164,15 +164,15 @@
                 </tr>
                 <tr>
                     <td>Longitude</td>
-                    <td><input type="text" ng-model="form.position_longitude" size="60" /></td>
+                    <td><input type="text" ng-model="form.positionLongitude" size="60" /></td>
                 </tr>
                 <tr>
                     <td>Latitude</td>
-                    <td><input type="text" ng-model="form.position_latitude" size="60" /></td>
+                    <td><input type="text" ng-model="form.positionLatitude" size="60" /></td>
                 </tr>
                 <tr>
                     <td>Lieu</td>
-                    <td><input type="text" ng-model="form.position_name" size="60" /></td>
+                    <td><input type="text" ng-model="form.positionName" size="60" /></td>
                 </tr>
                 <tr>
                     <td>Statut</td>

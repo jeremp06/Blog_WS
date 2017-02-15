@@ -44,9 +44,9 @@ public class UtilisateursFacadeREST extends AbstractFacade<Utilisateurs> {
     }
 
     @PUT
-    @Override
+    @Path("{id}")
     @Consumes({"application/xml", "application/json"})
-    public void edit(Utilisateurs entity) {
+    public void edit(@PathParam("id") Long id, Utilisateurs entity) {
         super.edit(entity);
     }
 

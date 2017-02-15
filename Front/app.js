@@ -51,7 +51,7 @@
         	controller: 'cnxCtrl'
         })
         .otherwise({
-        	redirectTo: '/blog'
+        	redirectTo: '/home'
         });
     }
     ]);
@@ -136,9 +136,9 @@ routeAppControllers.controller('editArticleCtrl',
 			title : "",
 			keywords : "",
 			photo : "",
-			position_longitude : "",
-			position_latitude : "",
-			position_name : "",
+			positionLongitude : "",
+			positionLatitude : "",
+			positionName : "",
 			content : "",
 			status : ""
 		};
@@ -154,6 +154,7 @@ routeAppControllers.controller('editArticleCtrl',
 				if ($scope.form.id == -1) {
                         //Id is absent so add employee - POST operation
                         method = "POST";
+                        $scope.form.id = "";
                         url = 'http://localhost:8080/WS_Blog/webresources/entity.articles';
                     } else {
                         //If Id is present, it's edit operation - PUT operation
@@ -178,16 +179,20 @@ routeAppControllers.controller('editArticleCtrl',
                 		method : 'GET',
                 		url : 'http://localhost:8080/WS_Blog/webresources/entity.articles/'+ $routeParams.id
                 	}).then(function successCallback(response) {
-                		$scope.article = response.data;
-                		$scope.form.title = $scope.article.title;
-                		$scope.form.keywords = $scope.article.keywords;
-                		$scope.form.photo = $scope.article.photo;
-                		$scope.form.position_longitude = $scope.article.position_longitude;
-                		$scope.form.position_latitude = $scope.article.position_latitude;
-                		$scope.form.position_name = $scope.article.position_name;
-                		$scope.form.content = $scope.article.content;
-                		$scope.form.status = $scope.article.status;
-                		$scope.form.id = $scope.article.id;
+                		if($routeParams.id == -1){
+                			_clearForm();
+                		} else {
+	                		$scope.article = response.data;
+	                		$scope.form.title = $scope.article.title;
+	                		$scope.form.keywords = $scope.article.keywords;
+	                		$scope.form.photo = $scope.article.photo;
+	                		$scope.form.positionLongitude = parseFloat($scope.article.positionLongitude);
+	                		$scope.form.positionLatitude = parseFloat($scope.article.positionLatitude);
+	                		$scope.form.positionName = $scope.article.positionName;
+	                		$scope.form.content = $scope.article.content;
+	                		$scope.form.status = $scope.article.status;
+	                		$scope.form.id = $scope.article.id;
+	                	}
                 	}, function errorCallback(response) {
                 		console.log(response.statusText);
                 	});
@@ -198,9 +203,9 @@ routeAppControllers.controller('editArticleCtrl',
                 	$scope.form.title = "";
                 	$scope.form.keywords = "";
                 	$scope.form.photo = "";
-                	$scope.form.position_longitude = "";
-                	$scope.form.position_latitude = "";
-                	$scope.form.position_name = "";
+                	$scope.form.positionLongitude = "";
+                	$scope.form.positionLatitude = "";
+                	$scope.form.positionName = "";
                 	$scope.form.content = "";
                 	$scope.form.status = "";
                 	$scope.form.id = -1;
@@ -253,6 +258,14 @@ routeAppControllers.controller('usersCtrl',
 	function($scope, $http, $location){
 		$scope.users = [];
 
+		$scope.form = {
+			id : -1,
+			lastname : "",
+			firstname : "",
+			about: "",
+			username : ""
+		};
+
 		_refreshPageData();
 
 		$scope.submitUser = function() {
@@ -276,18 +289,20 @@ routeAppControllers.controller('usersCtrl',
                     	headers : {
                     		'Content-Type' : 'application/json'
                     	}
-                    }).then( _success, _error );
+                    }).then(function successCallback(response) {
+                		_refreshPageData();
+                	}, function errorCallback(response) {
+                		console.log(response.statusText);
+                	});
                 };
 
-                $scope.editUser = function() {
-                	$scope.form.id = article.id;
-                	$scope.form.title = article.title;
-                	$scope.form.keywords = article.keywords;
-                	$scope.form.photo = article.photo;
-                	$scope.form.position_longitude = article.position_longitude;
-                	$scope.form.position_latitude = article.position_latitude;
-                	$scope.form.position_name = article.position_name;
-                	$scope.form.status = article.status;
+                $scope.editUser = function(user) {
+                	$scope.form.id = user.id;
+                	$scope.form.lastname = user.lastname;
+                	$scope.form.firstname = user.firstname;
+                	$scope.form.about = user.about;
+                	$scope.form.password = user.password;
+                	$scope.form.username = user.username;
                 }
 
                 function _refreshPageData() {
@@ -295,11 +310,22 @@ routeAppControllers.controller('usersCtrl',
                 		method : 'GET',
                 		url : 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs'
                 	}).then(function successCallback(response) {
-                		$scope.users = response.data;
+                		_refreshPageData();
                 	}, function errorCallback(response) {
                 		console.log(response.statusText);
                 	});
                 }
+
+                $scope.removeUser = function(user) {
+                	$http({
+                		method : 'DELETE',
+                		url : 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs/' + user.id
+                	}).then(function successCallback(response) {
+                		_refreshPageData();
+                	}, function errorCallback(response) {
+                		console.log(response.statusText);
+                	});
+                };
             }
             );
 
@@ -314,7 +340,7 @@ routeAppControllers.controller('activationCtrl',
 			function _refreshPageDataUsers() {
 				$http({
 					method : 'GET',
-					url : 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs'
+					url : 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs/status/0'
 				}).then(function successCallback(response) {
 					$scope.users = response.data;
 				}, function errorCallback(response) {
@@ -325,12 +351,62 @@ routeAppControllers.controller('activationCtrl',
 			function _refreshPageDataArticles() {
 				$http({
 					method : 'GET',
-					url : 'http://localhost:8080/WS_Blog/webresources/entity.articles'
+					url : 'http://localhost:8080/WS_Blog/webresources/entity.articles/status/0'
 				}).then(function successCallback(response) {
 					$scope.articles = response.data;
 				}, function errorCallback(response) {
 					console.log(response.statusText);
 				});
+			}
+
+			$scope.activeUser = function(user) {
+				user.status = 1;
+				submitUser(user);
+			}
+
+			$scope.refuseUser = function(user) {
+				user.status = 2;
+				submitUser(user);
+			}
+
+			$scope.activeArticle = function(article) {
+				article.status = 1;
+				submitArticle(article);
+			}
+
+			$scope.refuseArticle = function(article) {
+				article.status = 2;
+				submitArticle(article);
+			}
+
+			function submitUser(user) {
+				$http({
+                    	method : 'PUT',
+                    	url : 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs/' + user.id,
+                    	data : angular.toJson(user),
+                    	headers : {
+                    		'Content-Type' : 'application/json'
+                    	}
+                    }).then(function successCallback(response) {
+                		_refreshPageDataUsers();
+                	}, function errorCallback(response) {
+                		console.log(response.statusText);
+                	});
+			}
+
+			function submitArticle(article) {
+				$http({
+                    	method : 'PUT',
+                    	url : 'http://localhost:8080/WS_Blog/webresources/entity.articles/'+ article.id,
+                    	data : angular.toJson(article),
+                    	headers : {
+                    		'Content-Type' : 'application/json'
+                    	}
+                    }).then(function successCallback(response) {
+                			_refreshPageDataArticles();
+                	}, function errorCallback(response) {
+                		console.log(response.statusText);
+                	});
 			}
 		}
 

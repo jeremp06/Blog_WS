@@ -1,39 +1,20 @@
-USERS
+INSERT INTO ROLES(ID, DESCRIPTION, NAME) VALUES (1, 'Admin ', 'L administrateur peut valider des utilisateurs et des articles et les supprimer. ');
+INSERT INTO ROLES(ID, DESCRIPTION, NAME) VALUES (2, 'Membre ', 'Le memebre peut publier des articles, modifier ses articles et commenter. ');
 
-[
-{
-"about":"Etudiant en NTDP à la MIAGE de Sophia-Antipolis", "firstname":"Jérémy", "lastname":"PINET","username":"jp","password":"jp"
-},
+INSERT INTO UTILISATEURS(ID, ABOUT, FIRSTNAME, LAST_CONNECTED, LASTNAME, PASSWORD, STATUS, USERNAME, ROLE_ID) VALUES (1, 'Etudiant en NTDP à la MIAGE de Sophia Antipolis. ',  'Jeremy ', '2017-01-25',  'PINET ',  'jp ', 1,  'jp ', 1);
+INSERT INTO UTILISATEURS(ID, ABOUT, FIRSTNAME, LAST_CONNECTED, LASTNAME, PASSWORD, STATUS, USERNAME, ROLE_ID) VALUES (2, 'Etudiante en NTDP à la MIAGE de Sophia Antipolis. ',  'Brenda ', '2017-01-26',  'BARBE ',  'bb ', 1,  'bb ', 1);
+INSERT INTO UTILISATEURS(ID, ABOUT, FIRSTNAME, LAST_CONNECTED, LASTNAME, PASSWORD, STATUS, USERNAME, ROLE_ID) VALUES (3, 'Professeur à la MIAGE de Sophia Antipolis. ',  'Edouard ', '2017-01-26',  'AMOSSE ',  'ea ', 2,  'ea ', 1);
+INSERT INTO UTILISATEURS(ID, ABOUT, FIRSTNAME, LAST_CONNECTED, LASTNAME, PASSWORD, STATUS, USERNAME, ROLE_ID) VALUES (4, 'Etudiant en SIRIS à la MIAGE de Sophia Antipolis. ',  'Steven ', '2017-02-02',  'GUERY ',  'sg ', 1,  'sg ', 2);
+INSERT INTO UTILISATEURS(ID, ABOUT, FIRSTNAME, LAST_CONNECTED, LASTNAME, PASSWORD, STATUS, USERNAME, ROLE_ID) VALUES (5, 'Etudiant en SIRIS à la MIAGE de Sophia Antipolis. ',  'Sebastien ', '2017-02-04',  'LANTIER ',  'sl ', 1,  'sl ', 2);
 
-{
-"about":"Etudiant en NTDP à la MIAGE de Sophia-Antipolis", "firstname":"Brenda", "lastname":"BARBE","username":"bb","password":"bb"
-},
+INSERT INTO ARTICLES(ID, CONTENT, KEYWORDS, PHOTO, POSITION_LATITUDE, POSITION_LONGITUDE, POSITION_NAME, PUBLISHED_ON, STATUS, TITLE, UTILISATEUR_ID) VALUES (1,  'Nautulus est un site permettant de trouver de trouver un bâteau. Une fois que vous avez trouver celui qui vous intéresse, il est possible de le louer. ',  'bateaux ',  './img/works/1.jpg ',  '43.583 ',  '7.116 ',  'Antibes ', '2017-01-24', 1,  'Nautulus, les bateaux à portée de main ', 1);
+INSERT INTO ARTICLES(ID, CONTENT, KEYWORDS, PHOTO, POSITION_LATITUDE, POSITION_LONGITUDE, POSITION_NAME, PUBLISHED_ON, STATUS, TITLE, UTILISATEUR_ID) VALUES (2,  'Cet outil est destiné aux étudiants en médecine. Il leur permettra d étudier différents cas avec de réelles mise en situation. ',  'médecins ',  './img/works/2.jpg ',  '43.70 ',  '7.25 ',  'Nice ', '2017-01-25', 1,  'Step1 Expert, l outil des futurs médecins ', 1);
+INSERT INTO ARTICLES(ID, CONTENT, KEYWORDS, PHOTO, POSITION_LATITUDE, POSITION_LONGITUDE, POSITION_NAME, PUBLISHED_ON, STATUS, TITLE, UTILISATEUR_ID) VALUES (3,  'Cette application mobile est destiné à tous les citoyens souhaitant prendre soin de leur santé. Des graphiques permettent d avoir un aperçu rapide et synthétique des différentes données entrées. ',  'santé ',  './img/works/3.jpg ',  '48.853 ',  '2.35 ',  'Paris ', '2017-02-01', 1,  'Suivi de santé ', 4);
 
-{
-"about":"Etudiant en SIRIS à la MIAGE de Sophia-Antipolis", "firstname":"Sebastien", "lastname":"LANTIER","username":"sl","password":"sl"
-},
-
-{
-"about":"Etudiant en SIRIS à la MIAGE de Sophia-Antipolis", "firstname":"Steven", "lastname":"GUERY","username":"sg","password":"sg"
-},
-
-{
-"about":"Professeur à la MIAGE de Sophia-Antipolis", "firstname":"Edouard", "lastname":"AMOSSE","username":"ea","password":"ea"
-}
-]
-
-ARTICLES
-
-[
-{
-"title":"Nautulus, les bateaux à portée de main", "keywords":"bateaux", "content":"Nautulus est un site permettant de trouver de trouver un bâteau. Une fois que vous avez trouver celui qui vous intéresse, il est possible de le louer.", "photo":"./img/works/1.jpg", "position_longitude":"7.116", "position_latitude":"43.583","position_name":"Antibes", "status":"status", "user_id":"1"
-},
-
-{
-"title":"Step1 Expert, l'outil des futurs médecins", "keywords":"médecins", "content":"Cet outil est destiné aux étudiants en médecine. Il leur permettra d'étudier différents cas avec de réelles mise en situation.", "photo":"./img/works/2.jpg", "position_longitude":"7.25", "position_latitude":"43.70","position_name":"Nice", "status":"status", "user_id":"1"
-},
-
-{
-"title":"Suivi de santé", "keywords":"santé", "photo":"./img/works/3.jpg", "content":"Cette application mobile est destiné à tous les citoyens souhaitant prendre soin de leur santé. Des graphiques permettent d'avoir un aperçu rapide et synthétique des différentes données entrées.", "position_longitude":"2.35", "position_latitude":"48.853","position_name":"Paris", "status":"status", "user_id":"2"
-}
-]
+INSERT INTO COMMENTS(ID, COMMENT, COMMENTED_DATE, ARTICLE_ID, UTILISATEUR_ID) VALUES (1,  'J adore cette article ! ','2017-01-25',1,2);
+INSERT INTO COMMENTS(ID, COMMENT, COMMENTED_DATE, ARTICLE_ID, UTILISATEUR_ID) VALUES (2,  'Ce lien est très intéressant :) ','2017-01-27',1,2);
+INSERT INTO COMMENTS(ID, COMMENT, COMMENTED_DATE, ARTICLE_ID, UTILISATEUR_ID) VALUES (3,  'Je n ai rien compris à cette application, je la déconseille. ','2017-01-28',2,4);
+INSERT INTO COMMENTS(ID, COMMENT, COMMENTED_DATE, ARTICLE_ID, UTILISATEUR_ID) VALUES (4,  'Le principe est original... ','2017-02-02',3,5);
+INSERT INTO COMMENTS(ID, COMMENT, COMMENTED_DATE, ARTICLE_ID, UTILISATEUR_ID) VALUES (5,  'C est une très bonne idée ! ','2017-02-02',3,1);
+INSERT INTO COMMENTS(ID, COMMENT, COMMENTED_DATE, ARTICLE_ID, UTILISATEUR_ID) VALUES (6,  'Je mets un commentaire car j aimerai un article plus détaillé sur ce contenu. ','2017-02-03',3,2);
+INSERT INTO COMMENTS(ID, COMMENT, COMMENTED_DATE, ARTICLE_ID, UTILISATEUR_ID) VALUES (7,  'Où est-ce qu on put télécharger ça ? ','2017-02-04',2,5);
