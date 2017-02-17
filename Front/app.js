@@ -14,7 +14,7 @@
  * Configuration du module principal : routeApp
  */
  routeApp.config(['$routeProvider',
- 	function($routeProvider) { 
+ 	function($routeProvider, $scope) {
 
         // Système de routage
         $routeProvider
@@ -60,6 +60,11 @@
     }
     ]);
 
+ routeApp.factory(function($scope){
+ 	window.sessionStorage.getItem("currentUser");
+ 	$scope.currentUser = null;
+ });
+
 // Définition des contrôleurs
 var routeAppControllers = angular.module('routeAppControllers', []);
 
@@ -69,8 +74,8 @@ var routeAppControllers = angular.module('routeAppControllers', []);
 routeAppControllers.controller('blogCtrl',
 	function($scope, $http, $location){
 		$scope.articles = [];
-		$scope.currentUser = JSON.parse(window.sessionStorage.getItem("userCurrent"));
-		
+		$scope.currentUser = JSON.parse(window.sessionStorage.getItem("currentUser"));
+
                 //Chargement des données
                 _refreshPageData();
                 
@@ -125,7 +130,7 @@ routeAppControllers.controller('blogCtrl',
 routeAppControllers.controller('editMyArticleCtrl',
 	function($scope, $http, $location){
 		$scope.articles = [];
-		$scope.currentUser =  JSON.parse(window.sessionStorage.getItem("userCurrent"));
+		$scope.currentUser =  JSON.parse(window.sessionStorage.getItem("currentUser"));
 
                 //Chargement des données
                 _refreshPageData();
@@ -161,7 +166,31 @@ routeAppControllers.controller('cnxCtrl',
 					'Content-Type' : 'application/json'
 				}
 			}).then(function successCallback(response) {
-				window.sessionStorage.setItem("userCurrent", JSON.stringify(response.data));
+				window.sessionStorage.setItem("currentUser", JSON.stringify(response.data));
+				$location.path('#/blog');
+			}, function errorCallback(response) {
+				console.log(response.statusText);
+			});
+		}
+	}
+	);
+
+/////////////////////////////////////////
+///////// Controller register //////////
+/////////////////////////////////////////
+routeAppControllers.controller('cnxCtrl',
+	function($scope, $http, $location){
+
+		$scope.register = function() {
+			$http({
+				method : 'POST',
+				url : "http://localhost:8080/WS_Blog/webresources/entity.utilisateurs/",
+				data : angular.toJson($scope.form),
+				headers : {
+					'Content-Type' : 'application/json'
+				}
+			}).then(function successCallback(response) {
+				window.sessionStorage.setItem("currentUser", JSON.stringify(response.data));
 				$location.path('#/blog');
 			}, function errorCallback(response) {
 				console.log(response.statusText);
@@ -203,7 +232,7 @@ routeAppControllers.controller('editArticleCtrl',
                         method = "POST";
                         $scope.form.id = "";
                         $scope.form.published_on = new Date();
-                        $scope.form.utilisateur = JSON.parse(window.sessionStorage.getItem("userCurrent"));
+                        $scope.form.utilisateur = JSON.parse(window.sessionStorage.getItem("currentUser"));
                         url = 'http://localhost:8080/WS_Blog/webresources/entity.articles';
                     } else {
                         //If Id is present, it's edit operation - PUT operation
@@ -211,6 +240,7 @@ routeAppControllers.controller('editArticleCtrl',
                         url = 'http://localhost:8080/WS_Blog/webresources/entity.articles/' + $scope.form.id;
                     }
 
+                    alert(JSON.stringify($scope.form));
                     $http({
                     	method : method,
                     	url : url,
@@ -278,7 +308,7 @@ routeAppControllers.controller('editArticleCtrl',
 ///////// Controller affichage article //////////
 /////////////////////////////////////////////////
 routeAppControllers.controller('articleCtrl',
-	function($scope, $http, $location, $routeParams, $q){
+	function($scope, $http, $location, $routeParams){
 
 			//Chargement des données
 			_refreshPageData();
@@ -292,7 +322,7 @@ routeAppControllers.controller('articleCtrl',
 				currentComment.articleId = _getArticle($scope.article.id);
 				currentComment.utilisateur = _getUser(201);
 				alert(JSON.stringify(currentComment));
-				//currentComment.utilisateur = window.sessionStorage.getItem("userCurrent").id;
+				//currentComment.utilisateur = window.sessionStorage.getItem("currentUser").id;
 
 				$http({
 					method : 'POST',
@@ -370,7 +400,7 @@ routeAppControllers.controller('usersCtrl',
 	function($scope, $http, $location){
 		$scope.users = [];
 
-		var userCurrent = {};
+		var currentUser = {};
 
 		$scope.form = {
 			id : -1,
@@ -396,20 +426,20 @@ routeAppControllers.controller('usersCtrl',
                         method = "PUT";
                         url = 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs/' + $scope.form.id;
                         getUser($scope.form.id);
-                        alert(userCurrent);
-                        userCurrent.id = $scope.form.id;
-                        userCurrent.lastname = $scope.form.lastname;
-                        userCurrent.firstname = $scope.form.firstname;
-                        userCurrent.about = $scope.form.about;
-                        userCurrent.role = $scope.form.role;
-                        userCurrent.password = $scope.form.password;
-                        userCurrent.username = $scope.form.username;
+                        alert(currentUser);
+                        currentUser.id = $scope.form.id;
+                        currentUser.lastname = $scope.form.lastname;
+                        currentUser.firstname = $scope.form.firstname;
+                        currentUser.about = $scope.form.about;
+                        currentUser.role = $scope.form.role;
+                        currentUser.password = $scope.form.password;
+                        currentUser.username = $scope.form.username;
                     }
 
                     $http({
                     	method : method,
                     	url : url,
-                    	data : angular.toJson(userCurrent),
+                    	data : angular.toJson(currentUser),
                     	headers : {
                     		'Content-Type' : 'application/json'
                     	}
@@ -434,7 +464,7 @@ routeAppControllers.controller('usersCtrl',
                 		method : 'GET',
                 		url : 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs/'+ id
                 	}).then(function successCallback(response) {
-                		userCurrent = response.data;
+                		currentUser = response.data;
                 	}, function errorCallback(response) {
                 		console.log(response.statusText);
                 	});
