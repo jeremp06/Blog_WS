@@ -7,6 +7,7 @@ package service;
 
 import entity.Articles;
 import entity.Utilisateurs;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -61,6 +62,13 @@ public class UtilisateursFacadeREST extends AbstractFacade<Utilisateurs> {
     @Produces({"application/xml", "application/json"})
     public Utilisateurs find(@PathParam("id") Long id) {
         return super.find(id);
+    }
+    
+    @GET
+    @Path("articles/{id}")
+    @Produces({"application/xml", "application/json"})
+    public Collection<Articles> findArticles(@PathParam("id") long id) {
+        return super.find(id).getArticlesCollection();
     }
 
     @POST

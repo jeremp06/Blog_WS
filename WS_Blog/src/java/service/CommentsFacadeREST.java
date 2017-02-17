@@ -73,7 +73,7 @@ public class CommentsFacadeREST extends AbstractFacade<Comments> {
     public List<Comments> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
-
+    
     @GET
     @Path("count")
     @Produces("text/plain")

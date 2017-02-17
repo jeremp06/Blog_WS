@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -45,10 +46,10 @@ public class Comments implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date commentedDate;
     @JoinColumn(name = "UTILISATEUR_ID", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.PERSIST)
     private Utilisateurs utilisateur;
     @JoinColumn(name = "ARTICLE_ID", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.PERSIST)
     private Articles articleId;
 
     public Comments() {

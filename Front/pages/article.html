@@ -30,28 +30,34 @@
   								<ul class="meta-post">
   									<li><i class="icon-calendar"></i><i>{{ article.published_on }}</i></li>
   									<li><i class="icon-user">{{ article.user.username }}</li>
-  									<li><i class="icon-comments">{{article.comments.nb}} Comments</li>
   								</ul>
   							</div>
   						</article>
               <div class="table-responsive">
-              <table class="table">
-                <tbody ng-repeat="comment in comments"> <!-- Corps du tableau -->
-                  <tr>
-                    <td>{{comment.utilisateur}}</td>
-                    <td>{{comment.commentedDate}}</td>
-                    <td>{{comment.comment}}</td>
-                  </tr>
-                </tbody>
-              </table>
-              <div class="form-group">
-                <div class="col-sm-12">
-                  <textarea class="form-control" name="comment" id="comment"  placeholder="Veuillez écrire votre commentaire ..."></textarea>
+                <table class="table">
+                  <tbody ng-repeat="comment in comments">
+                    <tr>
+                      <td>{{comment.utilisateur.username}}</td>
+                      <td>{{comment.commentedDate | date:'yyyy-MM-dd'}}</td>
+                      <td>{{comment.comment}}</td>
+                    </tr>
+                  </tbody>
+                </table>
                 </div>
-              </div>
-  					</div>
-  				</div>
-  			</div>
-  		</section>
-  	</div>
-  </div>
+                <br>
+                <form class="form-horizontal" method="post" ng-submit="submitComment()">
+                  <div class="form-group">
+                    <div class="col-sm-12">
+                      <textarea class="form-control" name="comment" id="comment" placeholder="Veuillez écrire votre commentaire ..." ng-model="form.userComment"></textarea>
+                      <br>
+                      <div class="col-sm-offset-2 col-sm-4">
+                        <button type="submit" class="btn btn-theme">Ajouter</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>

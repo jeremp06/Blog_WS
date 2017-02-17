@@ -46,6 +46,10 @@
         	templateUrl: 'pages/articles.html',
         	controller: 'editArticleCtrl'
         })
+        .when('/myarticles', {
+        	templateUrl: 'pages/myArticles.html',
+        	controller: 'editMyArticleCtrl'
+        })
         .when('/connexion', {
         	templateUrl: 'pages/connexion.html',
         	controller: 'cnxCtrl'
@@ -56,20 +60,34 @@
     }
     ]);
 
-/**
- * Définition des contrôleurs
- */
- var routeAppControllers = angular.module('routeAppControllers', []);
+// Définition des contrôleurs
+var routeAppControllers = angular.module('routeAppControllers', []);
 
-// Contrôleur de la page de blog
+////////////////////////////////////
+///////// Controller blog //////////
+////////////////////////////////////
 routeAppControllers.controller('blogCtrl',
 	function($scope, $http, $location){
 		$scope.articles = [];
+		$scope.currentUser = JSON.parse(window.sessionStorage.getItem("userCurrent"));
 		
-
                 //Chargement des données
                 _refreshPageData();
                 
+                function submitArticle(article) {
+                	$http({
+                		method : 'PUT',
+                		url : 'http://localhost:8080/WS_Blog/webresources/entity.articles/'+ article.id,
+                		data : angular.toJson(article),
+                		headers : {
+                			'Content-Type' : 'application/json'
+                		}
+                	}).then(function successCallback(response) {
+                		_refreshPageData();
+                	}, function errorCallback(response) {
+                		console.log(response.statusText);
+                	});
+                }
 
                 //HTTP DELETE- delete employee by Id
                 $scope.removeArticle = function(article) {
@@ -79,55 +97,82 @@ routeAppControllers.controller('blogCtrl',
                 	}).then(_success, _error);
                 };
 
+                $scope.signalArticle = function(article) {
+                	article.status = 3;
+                	submitArticle(article);
+                }
+
 
                 /* Private Methods */
                 //HTTP GET- get all employees collection
                 function _refreshPageData() {
                 	$http({
                 		method : 'GET',
-                		url : 'http://localhost:8080/WS_Blog/webresources/entity.articles'
+                		url : 'http://localhost:8080/WS_Blog/webresources/entity.articles/status/1'
                 	}).then(function successCallback(response) {
                 		$scope.articles = response.data;
                 	}, function errorCallback(response) {
                 		console.log(response.statusText);
                 	});
                 }
+                
+            }
+            );
 
-                function _success(response) {
-                	_refreshPageData();
-                	_clearForm()
-                }
+/////////////////////////////////////////
+///////// Controller myArticle //////////
+////////////////////////////////////////
+routeAppControllers.controller('editMyArticleCtrl',
+	function($scope, $http, $location){
+		$scope.articles = [];
+		$scope.currentUser =  JSON.parse(window.sessionStorage.getItem("userCurrent"));
 
-                function _error(response) {
-                	console.log(response.statusText);
+                //Chargement des données
+                _refreshPageData();
+                
+                /* Private Methods */
+                //HTTP GET- get all employees collection
+                function _refreshPageData() {
+                	$http({
+                		method : 'GET',
+                		url : 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs/articles/' + $scope.currentUser.id
+                	}).then(function successCallback(response) {
+                		$scope.articles = response.data;
+                	}, function errorCallback(response) {
+                		console.log(response.statusText);
+                	});
                 }
                 
             }
             );
 
-/*routeAppControllers.controller('cnxCtrl',
+/////////////////////////////////////////
+///////// Controller connexion //////////
+/////////////////////////////////////////
+routeAppControllers.controller('cnxCtrl',
 	function($scope, $http, $location){
 
 		$scope.connexion = function() {
 			$http({
-				method : method,
-				url : "http://localhost:8080/WS_Blog/webresources/entity.articles/connexion",
-				data : angular.toJson($scope),
+				method : 'POST',
+				url : "http://localhost:8080/WS_Blog/webresources/entity.utilisateurs/connexion",
+				data : angular.toJson($scope.u),
 				headers : {
 					'Content-Type' : 'application/json'
 				}
 			}).then(function successCallback(response) {
-				alert("Succes :"+response.data);
-				$scope.changeRoute('#/blog');
+				window.sessionStorage.setItem("userCurrent", JSON.stringify(response.data));
+				$location.path('#/blog');
 			}, function errorCallback(response) {
-				alert("Echec");
 				console.log(response.statusText);
 			});
 		}
 	}
-	);*/
+	);
 
-// Controleur de l'édition/creation d'un article
+///////////////////////////////////////////////////
+///////// Controller edit/create article //////////
+///////////////////////////////////////////////////
 routeAppControllers.controller('editArticleCtrl',
 	function($scope, $http, $location, $routeParams){
 
@@ -140,7 +185,9 @@ routeAppControllers.controller('editArticleCtrl',
 			positionLatitude : "",
 			positionName : "",
 			content : "",
-			status : ""
+			status : 0,
+			published_on : "",
+			utilisateur: {}
 		};
 
 			//Chargement des données
@@ -155,6 +202,8 @@ routeAppControllers.controller('editArticleCtrl',
                         //Id is absent so add employee - POST operation
                         method = "POST";
                         $scope.form.id = "";
+                        $scope.form.published_on = new Date();
+                        $scope.form.utilisateur = JSON.parse(window.sessionStorage.getItem("userCurrent"));
                         url = 'http://localhost:8080/WS_Blog/webresources/entity.articles';
                     } else {
                         //If Id is present, it's edit operation - PUT operation
@@ -169,11 +218,13 @@ routeAppControllers.controller('editArticleCtrl',
                     	headers : {
                     		'Content-Type' : 'application/json'
                     	}
-                    }).then( _success, _error );
+                    }).then(function successCallback(response) {
+                    	$location.path('#/blog');
+                    }, function errorCallback(response) {
+                    	console.log(response.statusText);
+                    });
                 };
 
-                /* Private Methods */
-                //HTTP GET- get all employees collection
                 function _refreshPageData() {
                 	$http({
                 		method : 'GET',
@@ -182,17 +233,16 @@ routeAppControllers.controller('editArticleCtrl',
                 		if($routeParams.id == -1){
                 			_clearForm();
                 		} else {
-	                		$scope.article = response.data;
-	                		$scope.form.title = $scope.article.title;
-	                		$scope.form.keywords = $scope.article.keywords;
-	                		$scope.form.photo = $scope.article.photo;
-	                		$scope.form.positionLongitude = parseFloat($scope.article.positionLongitude);
-	                		$scope.form.positionLatitude = parseFloat($scope.article.positionLatitude);
-	                		$scope.form.positionName = $scope.article.positionName;
-	                		$scope.form.content = $scope.article.content;
-	                		$scope.form.status = $scope.article.status;
-	                		$scope.form.id = $scope.article.id;
-	                	}
+                			$scope.article = response.data;
+                			$scope.form.title = $scope.article.title;
+                			$scope.form.keywords = $scope.article.keywords;
+                			$scope.form.photo = $scope.article.photo;
+                			$scope.form.positionLongitude = parseFloat($scope.article.positionLongitude);
+                			$scope.form.positionLatitude = parseFloat($scope.article.positionLatitude);
+                			$scope.form.positionName = $scope.article.positionName;
+                			$scope.form.content = $scope.article.content;
+                			$scope.form.id = $scope.article.id;
+                		}
                 	}, function errorCallback(response) {
                 		console.log(response.statusText);
                 	});
@@ -207,7 +257,6 @@ routeAppControllers.controller('editArticleCtrl',
                 	$scope.form.positionLatitude = "";
                 	$scope.form.positionName = "";
                 	$scope.form.content = "";
-                	$scope.form.status = "";
                 	$scope.form.id = -1;
                 };
 
@@ -223,40 +272,105 @@ routeAppControllers.controller('editArticleCtrl',
             }
             );
 
+
+
+/////////////////////////////////////////////////
+///////// Controller affichage article //////////
+/////////////////////////////////////////////////
 routeAppControllers.controller('articleCtrl',
-	function($scope, $http, $location, $routeParams){
+	function($scope, $http, $location, $routeParams, $q){
 
 			//Chargement des données
 			_refreshPageData();
+			var currentComment = {};
+			var articleId = "";
 
-			/* Private Methods */
-                //HTTP GET- get all employees collection
-                function _refreshPageData() {
-                	$http({
-                		method : 'GET',
-                		url : 'http://localhost:8080/WS_Blog/webresources/entity.articles/'+ $routeParams.id
-                	}).then(function successCallback(response) {
-                		$scope.article = response.data;
-                	}, function errorCallback(response) {
-                		console.log(response.statusText);
-                	});
-                }
+			$scope.submitComment = function() {
 
-                function _success(response) {
-                	_refreshPageData();
-                	_clearForm()
-                }
+				currentComment.comment = $scope.form.userComment;
+				currentComment.commentedDate = new Date();
+				currentComment.articleId = _getArticle($scope.article.id);
+				currentComment.utilisateur = _getUser(201);
+				alert(JSON.stringify(currentComment));
+				//currentComment.utilisateur = window.sessionStorage.getItem("userCurrent").id;
 
-                function _error(response) {
-                	console.log(response.statusText);
-                }
-            }
-            );
+				$http({
+					method : 'POST',
+					url : 'http://localhost:8080/WS_Blog/webresources/entity.comments',
+					data : angular.toJson(currentComment),
+					headers : {
+						'Content-Type' : 'application/json'
+					}
+				}).then(function successCallback(response) {
+					JSON.stringify(response);
+					_refreshPageData();
+				}, function errorCallback(response) {
+					console.log(response.statusText);
+				});
+				
+			};
 
-// Controleur de la page gestion utilisateurs
+			function _refreshPageData() {
+				$http({
+					method : 'GET',
+					url : 'http://localhost:8080/WS_Blog/webresources/entity.articles/'+ $routeParams.id
+				}).then(function successCallback(response) {
+					$scope.article = response.data;
+					articleId = $scope.article.id;
+					_getComments();
+				}, function errorCallback(response) {
+					console.log(response.statusText);
+				});
+			}
+
+			function _getComments() {
+				$http({
+					method : 'GET',
+					url : 'http://localhost:8080/WS_Blog/webresources/entity.articles/comments/'+ articleId
+				}).then(function successCallback(response) {
+					$scope.comments = response.data;
+				}, function errorCallback(response) {
+					console.log(response.statusText);
+				});
+			}
+
+			function _getUser(id) {
+				var user = {};
+				$http({
+					method : 'GET',
+					url : 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs/'+ id
+				}).success(function successCallback(response) {
+					user = response.data;
+					alert(JSON.stringify(user));
+				}, function errorCallback(response) {
+					console.log(response.statusText);
+				});
+				return user;
+			}
+
+			function _getArticle(id) {
+				var article = {};
+				$http({
+					method : 'GET',
+					url : 'http://localhost:8080/WS_Blog/webresources/entity.articles/'+ id
+				}).then(function successCallback(response) {
+					article = response.data;
+				}, function errorCallback(response) {
+					console.log(response.statusText);
+				});
+				return article;
+			}
+		}
+		);
+
+/////////////////////////////////////////////
+///////// Controller gestion users //////////
+/////////////////////////////////////////////
 routeAppControllers.controller('usersCtrl',
 	function($scope, $http, $location){
 		$scope.users = [];
+
+		var userCurrent = {};
 
 		$scope.form = {
 			id : -1,
@@ -272,6 +386,7 @@ routeAppControllers.controller('usersCtrl',
 
 			var method = "";
 			var url = "";
+
 			if ($scope.form.id == -1) {
                         //Id is absent so add employee - POST operation
                         method = "POST";
@@ -280,20 +395,29 @@ routeAppControllers.controller('usersCtrl',
                         //If Id is present, it's edit operation - PUT operation
                         method = "PUT";
                         url = 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs/' + $scope.form.id;
+                        getUser($scope.form.id);
+                        alert(userCurrent);
+                        userCurrent.id = $scope.form.id;
+                        userCurrent.lastname = $scope.form.lastname;
+                        userCurrent.firstname = $scope.form.firstname;
+                        userCurrent.about = $scope.form.about;
+                        userCurrent.role = $scope.form.role;
+                        userCurrent.password = $scope.form.password;
+                        userCurrent.username = $scope.form.username;
                     }
 
                     $http({
                     	method : method,
                     	url : url,
-                    	data : angular.toJson($scope.form),
+                    	data : angular.toJson(userCurrent),
                     	headers : {
                     		'Content-Type' : 'application/json'
                     	}
                     }).then(function successCallback(response) {
-                		_refreshPageData();
-                	}, function errorCallback(response) {
-                		console.log(response.statusText);
-                	});
+                    	_refreshPageData();
+                    }, function errorCallback(response) {
+                    	console.log(response.statusText);
+                    });
                 };
 
                 $scope.editUser = function(user) {
@@ -305,12 +429,23 @@ routeAppControllers.controller('usersCtrl',
                 	$scope.form.username = user.username;
                 }
 
+                function getUser(id) {
+                	$http({
+                		method : 'GET',
+                		url : 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs/'+ id
+                	}).then(function successCallback(response) {
+                		userCurrent = response.data;
+                	}, function errorCallback(response) {
+                		console.log(response.statusText);
+                	});
+                }
+
                 function _refreshPageData() {
                 	$http({
                 		method : 'GET',
                 		url : 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs'
                 	}).then(function successCallback(response) {
-                		_refreshPageData();
+                		$scope.users = response.data;
                 	}, function errorCallback(response) {
                 		console.log(response.statusText);
                 	});
@@ -329,12 +464,16 @@ routeAppControllers.controller('usersCtrl',
             }
             );
 
+////////////////////////////////////////////////////////////////////
+///////// Controller supp, acept, refuse user and article /////////
+///////////////////////////////////////////////////////////////////
 routeAppControllers.controller('activationCtrl',
 	function($scope, $http, $location){
 
 		
 			//Chargement des données
 			_refreshPageDataUsers();
+			_refreshPageDataBadArticles();
 			_refreshPageDataArticles();
 
 			function _refreshPageDataUsers() {
@@ -343,6 +482,17 @@ routeAppControllers.controller('activationCtrl',
 					url : 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs/status/0'
 				}).then(function successCallback(response) {
 					$scope.users = response.data;
+				}, function errorCallback(response) {
+					console.log(response.statusText);
+				});
+			}
+
+			function _refreshPageDataBadArticles() {
+				$http({
+					method : 'GET',
+					url : 'http://localhost:8080/WS_Blog/webresources/entity.articles/status/3'
+				}).then(function successCallback(response) {
+					$scope.articlesSignales = response.data;
 				}, function errorCallback(response) {
 					console.log(response.statusText);
 				});
@@ -381,32 +531,33 @@ routeAppControllers.controller('activationCtrl',
 
 			function submitUser(user) {
 				$http({
-                    	method : 'PUT',
-                    	url : 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs/' + user.id,
-                    	data : angular.toJson(user),
-                    	headers : {
-                    		'Content-Type' : 'application/json'
-                    	}
-                    }).then(function successCallback(response) {
-                		_refreshPageDataUsers();
-                	}, function errorCallback(response) {
-                		console.log(response.statusText);
-                	});
+					method : 'PUT',
+					url : 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs/' + user.id,
+					data : angular.toJson(user),
+					headers : {
+						'Content-Type' : 'application/json'
+					}
+				}).then(function successCallback(response) {
+					_refreshPageDataUsers();
+				}, function errorCallback(response) {
+					console.log(response.statusText);
+				});
 			}
 
 			function submitArticle(article) {
 				$http({
-                    	method : 'PUT',
-                    	url : 'http://localhost:8080/WS_Blog/webresources/entity.articles/'+ article.id,
-                    	data : angular.toJson(article),
-                    	headers : {
-                    		'Content-Type' : 'application/json'
-                    	}
-                    }).then(function successCallback(response) {
-                			_refreshPageDataArticles();
-                	}, function errorCallback(response) {
-                		console.log(response.statusText);
-                	});
+					method : 'PUT',
+					url : 'http://localhost:8080/WS_Blog/webresources/entity.articles/'+ article.id,
+					data : angular.toJson(article),
+					headers : {
+						'Content-Type' : 'application/json'
+					}
+				}).then(function successCallback(response) {
+					_refreshPageDataArticles();
+					_refreshPageDataBadArticles();
+				}, function errorCallback(response) {
+					console.log(response.statusText);
+				});
 			}
 		}
 

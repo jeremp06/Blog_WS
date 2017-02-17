@@ -47,6 +47,16 @@
   							</div>
   						</div>
 
+              <div class="form-group">
+                <label for="role" class="col-sm-2 control-label">Role</label>
+                <div class="col-sm-10">
+                  <select class="form-control" id="role" name="role" ng-model="form.role">
+                    <option ng-model="form.role" value="1">Admin</option>
+                    <option ng-model="form.role" value="2">Membre</option>
+                  </select>
+                </div>
+              </div>
+
   						<div class="form-group">
   							<label for="username" class="col-sm-2 control-label">Identifiant</label>
   							<div class="col-sm-10">
@@ -90,7 +100,7 @@
   									<th></th>
   								</tr>
   							</thead>
-  							<tbody ng-repeat="user in users"> <!-- Corps du tableau -->
+  							<tbody ng-repeat="user in users"  ng-if="user.status != 2"> <!-- Corps du tableau -->
   								<tr>
   									<td>{{user.lastname}}</td>
   									<td>{{user.firstname}}</td>

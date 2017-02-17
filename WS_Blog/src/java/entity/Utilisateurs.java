@@ -61,9 +61,9 @@ public class Utilisateurs implements Serializable {
     @Size(max = 255)
     @Column(name = "USERNAME",unique=true, nullable=false)
     private String username;
-    @OneToMany(mappedBy = "utilisateur",cascade=CascadeType.PERSIST)
+    @OneToMany(mappedBy = "utilisateur",cascade=CascadeType.ALL)
     private Collection<Comments> commentsCollection;
-    @OneToMany(mappedBy = "utilisateur",cascade=CascadeType.PERSIST)
+    @OneToMany(mappedBy = "utilisateur",cascade=CascadeType.ALL)
     private Collection<Articles> articlesCollection;
     @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")
     @ManyToOne

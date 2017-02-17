@@ -60,7 +60,32 @@
   							<tbody ng-repeat="article in articles"> <!-- Corps du tableau -->
   								<tr>
   									<td><a href="#/article/{{article.id}}">{{ article.title }}</a></td>
-  									<td>{{article.utilisateur}}</td>
+  									<td>{{article.utilisateur.username}}</td>
+  									<td><a ng-click="activeArticle( article )" class="button"> <span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span></a></td>
+  									<td><a ng-click="refuseArticle( article )" class="button"> <span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+  								</tr>
+  							</tbody>
+  						</table>
+  					</div>
+  				</div>
+  			</div>
+  			<div class="row">
+  				<h3> Liste des articles signalés</h3>
+  				<div class="col-lg-10">
+  					<div class="table-responsive">
+  						<table class="table">
+  							<thead> <!-- En-tête du tableau -->
+  								<tr>
+  									<th>Titre</th>
+  									<th>Utilisateur</th>
+  									<th></th>
+  									<th></th>
+  								</tr>
+  							</thead>
+  							<tbody ng-repeat="article in articlesSignales"> <!-- Corps du tableau -->
+  								<tr>
+  									<td><a href="#/article/{{article.id}}">{{ article.title }}</a></td>
+  									<td>{{article.utilisateur.username}}</td>
   									<td><a ng-click="activeArticle( article )" class="button"> <span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span></a></td>
   									<td><a ng-click="refuseArticle( article )" class="button"> <span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
   								</tr>

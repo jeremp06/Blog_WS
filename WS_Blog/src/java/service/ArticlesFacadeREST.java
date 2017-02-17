@@ -6,7 +6,9 @@
 package service;
 
 import entity.Articles;
+import entity.Comments;
 import entity.Utilisateurs;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -82,6 +84,20 @@ public class ArticlesFacadeREST extends AbstractFacade<Articles> {
     @Produces({"application/xml", "application/json"})
     public List<Articles> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
+    }
+    
+    @GET
+    @Path("comments/{id}")
+    @Produces({"application/xml", "application/json"})
+    public Collection<Comments> findComments(@PathParam("id") long id) {
+        return super.find(id).getCommentsCollection();
+    }
+    
+    @GET
+    @Path("countComments/{id}")
+    @Produces({"application/xml", "application/json"})
+    public int countComments(@PathParam("id") long id) {
+        return super.find(id).getCommentsCollection().size();
     }
 
     @GET
