@@ -65,7 +65,7 @@ public class Articles implements Serializable {
     @Size(max = 255)
     @Column(name = "TITLE")
     private String title;
-    @OneToMany(mappedBy = "articleId",cascade=CascadeType.PERSIST)
+    @OneToMany(mappedBy = "articleId",cascade=CascadeType.ALL)
     private Collection<Comments> commentsCollection;
     @ManyToOne
     @JoinColumn(name = "UTILISATEUR_ID", referencedColumnName = "ID")

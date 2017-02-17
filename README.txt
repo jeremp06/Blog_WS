@@ -4,8 +4,9 @@ Gestion de blog en ligne
 Pré-requis
 ----------
 1. Afin de faire fonctionner notre projet, il faut installer un plugin chrome (Web Server for Chrome pour nous) pour lancer le serveur web.
-2. Ensuite, il faut lancer le WebService.
-3. Afin de démarrer avec des données, voici notre script SQL : 
+2. Il faut égaler installer le plugin Allow-Control-Allow-Origin: *
+3. Ensuite, il faut lancer le WebService.
+4. Afin de démarrer avec des données, voici notre script SQL : 
 INSERT INTO ROLES(ID, DESCRIPTION, NAME) VALUES (1, 'Admin ', 'L administrateur peut valider des utilisateurs et des articles et les supprimer. ');
 INSERT INTO ROLES(ID, DESCRIPTION, NAME) VALUES (2, 'Membre ', 'Le memebre peut publier des articles, modifier ses articles et commenter. ');
 

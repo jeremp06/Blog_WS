@@ -61,7 +61,7 @@
     ]);
 
  routeApp.factory(function($scope){
- 	window.sessionStorage.getItem("currentUser");
+ 	window.sessionStorage.removeItem("currentUser");
  	$scope.currentUser = null;
  });
 
@@ -178,7 +178,7 @@ routeAppControllers.controller('cnxCtrl',
 /////////////////////////////////////////
 ///////// Controller register //////////
 /////////////////////////////////////////
-routeAppControllers.controller('cnxCtrl',
+routeAppControllers.controller('registerCtrl',
 	function($scope, $http, $location){
 
 		$scope.register = function() {
@@ -320,7 +320,7 @@ routeAppControllers.controller('articleCtrl',
 				currentComment.comment = $scope.form.userComment;
 				currentComment.commentedDate = new Date();
 				currentComment.articleId = _getArticle($scope.article.id);
-				currentComment.utilisateur = _getUser(201);
+				currentComment.utilisateur = JSON.parse(window.sessionStorage.getItem("currentUser"));
 				alert(JSON.stringify(currentComment));
 				//currentComment.utilisateur = window.sessionStorage.getItem("currentUser").id;
 
@@ -364,19 +364,6 @@ routeAppControllers.controller('articleCtrl',
 				});
 			}
 
-			function _getUser(id) {
-				var user = {};
-				$http({
-					method : 'GET',
-					url : 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs/'+ id
-				}).success(function successCallback(response) {
-					user = response.data;
-					alert(JSON.stringify(user));
-				}, function errorCallback(response) {
-					console.log(response.statusText);
-				});
-				return user;
-			}
 
 			function _getArticle(id) {
 				var article = {};

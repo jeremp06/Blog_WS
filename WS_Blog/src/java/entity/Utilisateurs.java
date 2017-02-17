@@ -12,6 +12,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -63,7 +64,7 @@ public class Utilisateurs implements Serializable {
     private String username;
     @OneToMany(mappedBy = "utilisateur",cascade=CascadeType.ALL)
     private Collection<Comments> commentsCollection;
-    @OneToMany(mappedBy = "utilisateur",cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "utilisateur",cascade={CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
     private Collection<Articles> articlesCollection;
     @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")
     @ManyToOne
