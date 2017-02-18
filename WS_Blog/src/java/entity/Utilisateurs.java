@@ -62,14 +62,14 @@ public class Utilisateurs implements Serializable {
     private Integer status;
     @Size(max = 255)
     @Column(name = "USERNAME", unique = true, nullable = false)
-    private String username;
+    private String username; 
     @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
     private Collection<Comments> commentsCollection;
-    @OneToMany(mappedBy = "utilisateur", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
     private Collection<Articles> articlesCollection;
     @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")
     @ManyToOne(cascade = CascadeType.PERSIST)
-    private Roles roleId;
+    private     Roles roleId;
 
     public Utilisateurs() {
     }
@@ -150,15 +150,7 @@ public class Utilisateurs implements Serializable {
     public void setCommentsCollection(Collection<Comments> commentsCollection) {
         this.commentsCollection = commentsCollection;
     }
-
-    public Roles getRole() {
-        return roleId;
-    }
-
-    public void setRole(Roles role) {
-        this.roleId = role;
-    }
-
+  @XmlTransient
     public Collection<Articles> getArticlesCollection() {
         return articlesCollection;
     }

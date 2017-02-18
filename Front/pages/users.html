@@ -13,10 +13,10 @@
   			</div>
   		</section>
   	</div>
-    <div ng-if="currentUser == null || currentUser.role.id == 2" class="main-content">
+    <div ng-if="currentUser == null || currentUser.roleId.id == 2" class="main-content">
   <center><h3> Vous devez être un administrateur pour acceder a cette page</h3></center>
   </div>
-  	<section ng-if="currentUser.role.id == 1"  id="content">
+  	<section ng-if="currentUser.roleId.id == 1"  id="content">
   		<div class="container">
   			<div class="row"> 
   				<h3> Création d'un utilisateur</h3>

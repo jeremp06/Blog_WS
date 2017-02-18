@@ -172,6 +172,7 @@ routeAppControllers.controller('cnxCtrl',
 				}
 			}).then(function successCallback(response) {
 				window.sessionStorage.setItem("currentUser", JSON.stringify(response.data));
+                alert(window.sessionStorage.getItem("currentUser"));
 				$location.path('#/blog');
 			}, function errorCallback(response) {
 				console.log(response.statusText);
@@ -246,7 +247,6 @@ routeAppControllers.controller('editArticleCtrl',
                         url = 'http://localhost:8080/WS_Blog/webresources/entity.articles/' + $scope.form.id;
                     }
 
-                    alert(JSON.stringify($scope.form));
                     $http({
                     	method : method,
                     	url : url,
@@ -428,25 +428,24 @@ routeAppControllers.controller('usersCtrl',
 
 			var method = "";
 			var url = "";
-
+            $scope.userEdit;
 			if ($scope.form.id == -1) {
                         //Id is absent so add employee - POST operation
                         method = "POST";
                         url = 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs';
+
                     } else {
                         //If Id is present, it's edit operation - PUT operation
                         method = "PUT";
                         url = 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs/' + $scope.form.id;
-                        getUser($scope.form.id);
-                        alert(currentUser);
-                        currentUser.id = $scope.form.id;
+                    }
                         currentUser.lastname = $scope.form.lastname;
                         currentUser.firstname = $scope.form.firstname;
                         currentUser.about = $scope.form.about;
-                        currentUser.role = $scope.form.role;
                         currentUser.password = $scope.form.password;
                         currentUser.username = $scope.form.username;
-                    }
+                        alert(JSON.stringify(currentUser));
+                    
 
                     $http({
                     	method : method,
@@ -463,12 +462,14 @@ routeAppControllers.controller('usersCtrl',
                 };
 
                 $scope.editUser = function(user) {
+                   currentUser = user;
                 	$scope.form.id = user.id;
                 	$scope.form.lastname = user.lastname;
                 	$scope.form.firstname = user.firstname;
                 	$scope.form.about = user.about;
                 	$scope.form.password = user.password;
                 	$scope.form.username = user.username;
+                    $scope.form.role = user.role;
                 }
 
                 function getUser(id) {
