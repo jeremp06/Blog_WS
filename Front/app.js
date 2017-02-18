@@ -19,8 +19,7 @@
         // Système de routage
         $routeProvider
         .when('/home', {
-        	templateUrl: 'pages/home.html',
-        	controller: 'homeCtrl'
+        	templateUrl: 'pages/home.html'
         })
         .when('/blog', {
         	templateUrl: 'pages/blog.html',
@@ -131,9 +130,10 @@ routeAppControllers.controller('editMyArticleCtrl',
 	function($scope, $http, $location){
 		$scope.articles = [];
 		$scope.currentUser =  JSON.parse(window.sessionStorage.getItem("currentUser"));
-
                 //Chargement des données
-                _refreshPageData();
+                if($scope.currentUser != null){
+                    _refreshPageData();
+                }
                 
                 /* Private Methods */
                 //HTTP GET- get all employees collection
@@ -142,7 +142,12 @@ routeAppControllers.controller('editMyArticleCtrl',
                 		method : 'GET',
                 		url : 'http://localhost:8080/WS_Blog/webresources/entity.utilisateurs/articles/' + $scope.currentUser.id
                 	}).then(function successCallback(response) {
-                		$scope.articles = response.data;
+                         for(var i = 0; i < response.data.length; i++) {
+                            if (response.data[i].status != 1){
+                                $scope.articles[$scope.articles.length] = response.data[i];
+                            }
+                         }
+                         
                 	}, function errorCallback(response) {
                 		console.log(response.statusText);
                 	});
@@ -180,7 +185,7 @@ routeAppControllers.controller('cnxCtrl',
 /////////////////////////////////////////
 routeAppControllers.controller('registerCtrl',
 	function($scope, $http, $location){
-
+$scope.currentUser =  JSON.parse(window.sessionStorage.getItem("currentUser"));
 		$scope.register = function() {
 			$http({
 				method : 'POST',
@@ -205,6 +210,7 @@ routeAppControllers.controller('registerCtrl',
 routeAppControllers.controller('editArticleCtrl',
 	function($scope, $http, $location, $routeParams){
 
+        $scope.currentUser =  JSON.parse(window.sessionStorage.getItem("currentUser"));
 		$scope.form = {
 			id : -1,
 			title : "",
@@ -215,7 +221,7 @@ routeAppControllers.controller('editArticleCtrl',
 			positionName : "",
 			content : "",
 			status : 0,
-			published_on : "",
+			publishedOn : "",
 			utilisateur: {}
 		};
 
@@ -231,7 +237,7 @@ routeAppControllers.controller('editArticleCtrl',
                         //Id is absent so add employee - POST operation
                         method = "POST";
                         $scope.form.id = "";
-                        $scope.form.published_on = new Date();
+                        $scope.form.publishedOn = new Date();
                         $scope.form.utilisateur = JSON.parse(window.sessionStorage.getItem("currentUser"));
                         url = 'http://localhost:8080/WS_Blog/webresources/entity.articles';
                     } else {
@@ -309,12 +315,12 @@ routeAppControllers.controller('editArticleCtrl',
 /////////////////////////////////////////////////
 routeAppControllers.controller('articleCtrl',
 	function($scope, $http, $location, $routeParams){
-
+        $scope.userArticle; 
 			//Chargement des données
 			_refreshPageData();
 			var currentComment = {};
 			var articleId = "";
-
+            $scope.currentUser =  JSON.parse(window.sessionStorage.getItem("currentUser"));
 			$scope.submitComment = function() {
 
 				currentComment.comment = $scope.form.userComment;
@@ -351,6 +357,24 @@ routeAppControllers.controller('articleCtrl',
 				}, function errorCallback(response) {
 					console.log(response.statusText);
 				});
+                $http({
+                    method : 'GET',
+                    url : 'http://localhost:8080/WS_Blog/webresources/entity.articles/utilisateur/'+ $routeParams.id
+                }).then(function successCallback(response) {
+                    $scope.userArticle = response.data;
+                }, function errorCallback(response) {
+                    console.log(response.statusText);
+                });
+                $http({
+                    method : 'GET',
+                    url : 'http://localhost:8080/WS_Blog/webresources/entity.articles/'+ $routeParams.id
+                }).then(function successCallback(response) {
+                    $scope.article = response.data;
+                    articleId = $scope.article.id;
+                    _getComments();
+                }, function errorCallback(response) {
+                    console.log(response.statusText);
+                });
 			}
 
 			function _getComments() {
@@ -387,6 +411,7 @@ routeAppControllers.controller('usersCtrl',
 	function($scope, $http, $location){
 		$scope.users = [];
 
+        $scope.currentUser =  JSON.parse(window.sessionStorage.getItem("currentUser"));
 		var currentUser = {};
 
 		$scope.form = {
@@ -486,7 +511,7 @@ routeAppControllers.controller('usersCtrl',
 ///////////////////////////////////////////////////////////////////
 routeAppControllers.controller('activationCtrl',
 	function($scope, $http, $location){
-
+            $scope.currentUser =  JSON.parse(window.sessionStorage.getItem("currentUser"));
 		
 			//Chargement des données
 			_refreshPageDataUsers();

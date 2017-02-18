@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "UTILISATEURS")
 @XmlRootElement
 public class Utilisateurs implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -55,19 +56,19 @@ public class Utilisateurs implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date lastConnected;
     @Size(max = 255)
-    @Column(name = "PASSWORD",unique=true, nullable=false)
+    @Column(name = "PASSWORD", unique = true, nullable = false)
     private String password;
     @Column(name = "STATUS")
     private Integer status;
     @Size(max = 255)
-    @Column(name = "USERNAME",unique=true, nullable=false)
+    @Column(name = "USERNAME", unique = true, nullable = false)
     private String username;
-    @OneToMany(mappedBy = "utilisateur",cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
     private Collection<Comments> commentsCollection;
-    @OneToMany(mappedBy = "utilisateur",cascade={CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "utilisateur", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
     private Collection<Articles> articlesCollection;
     @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Roles roleId;
 
     public Utilisateurs() {
@@ -198,5 +199,5 @@ public class Utilisateurs implements Serializable {
     public String toString() {
         return "entity.Utilisateurs[ id=" + id + " ]";
     }
-    
+
 }

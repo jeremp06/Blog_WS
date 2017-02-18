@@ -13,7 +13,10 @@
   			</div>
   		</section>
   	</div>
-  	<section id="content">
+    <div ng-if="currentUser == null || currentUser.role.id == 2" class="main-content">
+  <center><h3> Vous devez être un administrateur pour acceder a cette page</h3></center>
+  </div>
+  	<section ng-if="currentUser.role.id == 1"  id="content">
   		<div class="container">
   			<div class="row"> 
   				<h3> Création d'un utilisateur</h3>
@@ -84,7 +87,7 @@
   					</form>
   				</div>
   			</div>
-  			<div ng-if="currentUser.role.id == 1" class="row">
+  			<div class="row">
   				<h3> Liste des utilisateurs</h3>
   				<div class="col-lg-10">
   					<div class="table-responsive">

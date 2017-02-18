@@ -71,7 +71,14 @@ public class ArticlesFacadeREST extends AbstractFacade<Articles> {
     public Articles find(@PathParam("id") Long id) {
         return super.find(id);
     }
-
+    
+    @GET
+    @Path("utilisateur/{id}")
+    @Produces({"application/xml", "application/json"})
+    public Utilisateurs findUtilisateur(@PathParam("id") Long id) {
+        return super.find(id).getUtilisateur();
+    }
+    
     @GET
     @Override
     @Produces({"application/xml", "application/json"})
