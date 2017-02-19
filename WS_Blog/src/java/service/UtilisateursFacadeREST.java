@@ -8,6 +8,7 @@ package service;
 import entity.Articles;
 import entity.Roles;
 import entity.Utilisateurs;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -70,8 +71,8 @@ public class UtilisateursFacadeREST extends AbstractFacade<Utilisateurs> {
     @GET
     @Path("articles/{id}")
     @Produces({"application/xml", "application/json"})
-    public Collection<Articles> findArticles(@PathParam("id") long id) {
-        return super.find(id).getArticlesCollection();
+    public List<Articles> findArticles(@PathParam("id") long id) {
+        return new ArrayList(super.find(id).getArticlesCollection());
     }
 
     @POST

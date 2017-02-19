@@ -67,7 +67,7 @@ public class Articles implements Serializable {
     private String title;
     @OneToMany(mappedBy = "articleId",cascade=CascadeType.ALL)
     private Collection<Comments> commentsCollection;
-    @ManyToOne(cascade=CascadeType.MERGE)
+    @ManyToOne(cascade={CascadeType.REMOVE,CascadeType.REFRESH,CascadeType.MERGE})
     @JoinColumn(name = "UTILISATEUR_ID", referencedColumnName = "ID")
     private Utilisateurs utilisateur;
 
@@ -171,7 +171,7 @@ public class Articles implements Serializable {
         return utilisateur;
     }
 
-    public void setUtilisateursCollection(Utilisateurs utilisateur) {
+    public void setUtilisateur(Utilisateurs utilisateur) {
         this.utilisateur = utilisateur;
     }
 
