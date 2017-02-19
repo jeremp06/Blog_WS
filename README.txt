@@ -3,10 +3,29 @@ Gestion de blog en ligne
 
 Pré-requis
 ----------
+0. Si vous avez recuperé le projet via le git, il faut rajouter le dossier WEB-INF dans web, même si il est vide il le faut
 1. Afin de faire fonctionner notre projet, il faut installer un plugin chrome (Web Server for Chrome pour nous) pour lancer le serveur web.
 2. Il faut égaler installer le plugin Allow-Control-Allow-Origin: *
-3. Ensuite, il faut lancer le WebService.
-4. Afin de démarrer avec des données, voici notre script SQL : 
+3. Ensuite, il faut lancer le WebService.(deploy)
+4. Voici la config de la BD (les tables se créent automatiquement au deploiement de l'application) :
+	<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
+	<resources>
+	    <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="org.apache.derby.jdbc.ClientDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="derby_net_Blog_appPool" non-transactional-connections="false" pool-resize-quantity="2" res-type="javax.sql.DataSource" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
+	        <property name="serverName" value="localhost"/>
+	        <property name="portNumber" value="1527"/>
+	        <property name="databaseName" value="Blog"/>
+	        <property name="User" value="app"/>
+	        <property name="Password" value="app"/>
+	        <property name="URL" value="jdbc:derby://localhost:1527/Blog"/>
+	        <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
+	    </jdbc-connection-pool>
+	    <jdbc-resource enabled="true" jndi-name="BlogWSPU" object-type="user" pool-name="derby_net_Blog_appPool"/>
+	</resources>
+
+Et la persistence Unit est WS_BlogPU 
+
+5. Afin de démarrer avec des données, voici notre script SQL : 
 INSERT INTO ROLES(ID, DESCRIPTION, NAME) VALUES (1,'Admin','L administrateur peut valider des utilisateurs et des articles et les supprimer.');
 INSERT INTO ROLES(ID, DESCRIPTION, NAME) VALUES (2,'Membre','Le memebre peut publier des articles, modifier ses articles et commenter.');
 
@@ -65,3 +84,11 @@ ARTICLE - Status
 1 = Accepté
 2 = Refusé
 3 = Signalé
+
+/**
+*
+*	Ce qui n'a pas été fait
+*
+**/
+Le chargement des images avec les formulaires multiparts n'a pas été réalisé 
+Mise en place de rapports statistiques
