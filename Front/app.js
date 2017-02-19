@@ -348,14 +348,15 @@ routeAppControllers.controller('articleCtrl',
 			//Chargement des données
 			_refreshPageData();
 			var currentComment = {};
-			var articleId = "";
+            $scope.comments = {};
+			var articleId = $routeParams.id;
             $scope.currentUser =  JSON.parse(window.sessionStorage.getItem("currentUser"));
 			$scope.submitComment = function() {
 
                 alert($scope.article.id);
 				currentComment.comment = $scope.form.userComment;
 				currentComment.commentedDate = new Date();
-				var promise = $http.get('http://localhost:8080/WS_Blog/webresources/entity.articles/'+  $scope.article.id);
+				var promise = $http.get('http://localhost:8080/WS_Blog/webresources/entity.articles/'+$routeParams.id);
 
                        
 
@@ -374,7 +375,7 @@ routeAppControllers.controller('articleCtrl',
     					}
     				}).then(function successCallback(response) {
     					JSON.stringify(response);
-    					_refreshPageData();
+    					_getComments();
     				}, function errorCallback(response) {
     					console.log(response.statusText);
     				});
@@ -415,11 +416,15 @@ routeAppControllers.controller('articleCtrl',
 			function _getComments() {
 				$http({
 					method : 'GET',
-					url : 'http://localhost:8080/WS_Blog/webresources/entity.articles/comments/'+ articleId
+					url : 'http://localhost:8080/WS_Blog/webresources/entity.comments'
 				}).then(function successCallback(response) {
-                    alert(articleId),
                     alert(JSON.stringify(response.data));
-					$scope.comments = response.data;
+                    var j = 0;
+                    for (var i = 0; i < response.data.length; i++) {
+                        if (response.data[i].articleId.id == $routeParams.id ){
+                            $scope.comments[j++] = response.data[i];
+                        }
+                    }
 				}, function errorCallback(response) {
 					console.log(response.statusText);
 				});

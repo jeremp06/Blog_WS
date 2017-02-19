@@ -8,6 +8,7 @@ package service;
 import entity.Articles;
 import entity.Comments;
 import entity.Utilisateurs;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -101,8 +102,8 @@ public class ArticlesFacadeREST extends AbstractFacade<Articles> {
     @GET
     @Path("comments/{id}")
     @Produces({"application/xml", "application/json"})
-    public Collection<Comments> findComments(@PathParam("id") long id) {
-        return super.find(id).getCommentsCollection();
+    public List<Comments> findComments(@PathParam("id") long id) {
+        return  new ArrayList(super.find(id).getCommentsCollection());
     }
     
     @GET
