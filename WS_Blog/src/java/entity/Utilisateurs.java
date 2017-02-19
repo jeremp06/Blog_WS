@@ -68,7 +68,7 @@ public class Utilisateurs implements Serializable {
     @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
     private Collection<Articles> articlesCollection;
     @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")
-    @ManyToOne(cascade={CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+    @ManyToOne(cascade={CascadeType.MERGE,  CascadeType.REFRESH})
     private     Roles roleId;
 
     public Utilisateurs() {
