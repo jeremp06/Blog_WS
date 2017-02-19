@@ -69,11 +69,6 @@ nbactions.xml
 
 # Windows shortcuts
 *.lnk
-/CRM2016-ejb/build/
-/CRM2016-ejb/dist/
 /build/
-/CRM2016-war/build/
-/CRM2016-war/dist/
 /dist/
-!/CRM2016-war/web/WEB-INF/lib/bootstrap-1.0.10.jar
 /WS_Blog/nbproject/private/
