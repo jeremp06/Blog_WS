@@ -231,7 +231,6 @@ routeAppControllers.controller('editArticleCtrl',
 
 			//Quand on soumet le formularie pour creer ou modifier
 			$scope.submitArticle = function() {
-
 				var method = "";
 				var url = "";
 				if ($scope.form.id == -1) {
@@ -248,18 +247,18 @@ routeAppControllers.controller('editArticleCtrl',
                         method = "PUT";
                         
                         url = 'http://localhost:8080/WS_Blog/webresources/entity.articles/' + $scope.form.id;
-                            $scope.article.title = $scope.form.title;
-                            $scope.article.keywords = $scope.form.keywords;
-                            $scope.article.positionName = $scope.form.positionName;
-                            $scope.article.content = $scope.form.content;
-                            $scope.article.positionLatitude = $scope.form.positionLatitude;
-                            $scope.article.positionLongitude = $scope.form.positionLongitude;
+        
                             $scope.form.id = $scope.article.id;
 
                         }
                                   
                     if ($scope.article != null && $scope.form.id == $scope.article.id) {
-                         alert(JSON.stringify($scope.article));
+                        var promise = $http.get('http://localhost:8080/WS_Blog/webresources/entity.articles/utilisateur/idArticle/'+$scope.form.id);
+
+                       promise.then(function(data) {
+
+                        $scope.article.utilisateur = data.data;
+                        alert(JSON.stringify( $scope.article));
                         $http({
                         	method : method,
                         	url : url,
@@ -272,6 +271,7 @@ routeAppControllers.controller('editArticleCtrl',
                         }, function errorCallback(response) {
                         	console.log(response.statusText);
                         });
+                    });
                     }else if($scope.article == null){
                         alert(JSON.stringify($scope.form));
                         $http({
@@ -298,11 +298,12 @@ routeAppControllers.controller('editArticleCtrl',
                 			_clearForm();
                 		} else {
                 			$scope.article = response.data;
+                            alert(JSON.stringify($scope.article));
                 			$scope.form.title = $scope.article.title;
                 			$scope.form.keywords = $scope.article.keywords;
                 			$scope.form.photo = $scope.article.photo;
                 			$scope.form.positionName = $scope.article.positionName;
-                            
+
                             $scope.form.positionLatitude =parseFloat($scope.article.positionLatitude);
                             $scope.form.positionLongitude =parseFloat($scope.article.positionLongitude);
                 			$scope.form.content = $scope.article.content;
@@ -343,7 +344,7 @@ routeAppControllers.controller('editArticleCtrl',
 /////////////////////////////////////////////////
 routeAppControllers.controller('articleCtrl',
 	function($scope, $http, $location, $routeParams){
-        $scope.userArticle; 
+  
 			//Chargement des données
 			_refreshPageData();
 			var currentComment = {};
@@ -351,27 +352,33 @@ routeAppControllers.controller('articleCtrl',
             $scope.currentUser =  JSON.parse(window.sessionStorage.getItem("currentUser"));
 			$scope.submitComment = function() {
 
+                alert($scope.article.id);
 				currentComment.comment = $scope.form.userComment;
 				currentComment.commentedDate = new Date();
-				currentComment.articleId = _getArticle($scope.article.id);
+				var promise = $http.get('http://localhost:8080/WS_Blog/webresources/entity.articles/'+  $scope.article.id);
+
+                       
+
 				currentComment.utilisateur = JSON.parse(window.sessionStorage.getItem("currentUser"));
-				alert(JSON.stringify(currentComment));
-
-
-				$http({
-					method : 'POST',
-					url : 'http://localhost:8080/WS_Blog/webresources/entity.comments',
-					data : angular.toJson(currentComment),
-					headers : {
-						'Content-Type' : 'application/json'
-					}
-				}).then(function successCallback(response) {
-					JSON.stringify(response);
-					_refreshPageData();
-				}, function errorCallback(response) {
-					console.log(response.statusText);
-				});
 				
+
+                promise.then(function(data) {
+                    currentComment.articleId = data.data;
+                    alert(JSON.stringify(currentComment));
+    				$http({
+    					method : 'POST',
+    					url : 'http://localhost:8080/WS_Blog/webresources/entity.comments',
+    					data : angular.toJson(currentComment),
+    					headers : {
+    						'Content-Type' : 'application/json'
+    					}
+    				}).then(function successCallback(response) {
+    					JSON.stringify(response);
+    					_refreshPageData();
+    				}, function errorCallback(response) {
+    					console.log(response.statusText);
+    				});
+    			});
 			};
 
 			function _refreshPageData() {
@@ -410,6 +417,8 @@ routeAppControllers.controller('articleCtrl',
 					method : 'GET',
 					url : 'http://localhost:8080/WS_Blog/webresources/entity.articles/comments/'+ articleId
 				}).then(function successCallback(response) {
+                    alert(articleId),
+                    alert(JSON.stringify(response.data));
 					$scope.comments = response.data;
 				}, function errorCallback(response) {
 					console.log(response.statusText);
@@ -419,6 +428,7 @@ routeAppControllers.controller('articleCtrl',
 
 			function _getArticle(id) {
 				var article = {};
+
 				$http({
 					method : 'GET',
 					url : 'http://localhost:8080/WS_Blog/webresources/entity.articles/'+ id
@@ -473,11 +483,13 @@ routeAppControllers.controller('usersCtrl',
                         currentUser.username = $scope.form.username;
 
                         
-                    if ($scope.form.id != -1){
+
                         var promise = $http.get('http://localhost:8080/WS_Blog/webresources/entity.roles/'+$scope.form.role);
 
                        promise.then(function(data) {
                         currentUser.roleId = data.data;
+
+                        alert(JSON.stringify(currentUser));
                                $http({
                                 method : method,
                                 url : url,
@@ -491,21 +503,6 @@ routeAppControllers.controller('usersCtrl',
                                 console.log(response.statusText);
                             });
                         });
-                    }
-                    else{
-                         $http({
-                            method : method,
-                            url : url,
-                            data : angular.toJson(currentUser),
-                            headers : {
-                                'Content-Type' : 'application/json'
-                            }
-                        }).then(function successCallback(response) {
-                            _refreshPageData();
-                        }, function errorCallback(response) {
-                            console.log(response.statusText);
-                        });
-                    }
                  };
                 $scope.editUser = function(user) {
                    currentUser = user;

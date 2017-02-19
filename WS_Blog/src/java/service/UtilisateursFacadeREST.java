@@ -6,6 +6,7 @@
 package service;
 
 import entity.Articles;
+import entity.Roles;
 import entity.Utilisateurs;
 import java.util.Collection;
 import java.util.List;
@@ -42,6 +43,8 @@ public class UtilisateursFacadeREST extends AbstractFacade<Utilisateurs> {
     @Consumes({"application/xml", "application/json"})
     public void create(Utilisateurs entity) {
         super.create(entity);
+ 
+        
     }
 
     @PUT

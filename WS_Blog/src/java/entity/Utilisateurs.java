@@ -68,7 +68,7 @@ public class Utilisateurs implements Serializable {
     @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
     private Collection<Articles> articlesCollection;
     @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private     Roles roleId;
 
     public Utilisateurs() {
@@ -158,7 +158,6 @@ public class Utilisateurs implements Serializable {
     public void setArticlesCollection(Collection<Articles> articlesCollection) {
         this.articlesCollection = articlesCollection;
     }
-
     public Roles getRoleId() {
         return roleId;
     }

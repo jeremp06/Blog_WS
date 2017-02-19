@@ -58,7 +58,12 @@ public class ArticlesFacadeREST extends AbstractFacade<Articles> {
     public List<Articles> findByStatus(@PathParam("status") long status) {
         return super.findByStatus(status);
     }
-
+    @GET
+    @Path("utilisateur/{id}")
+    @Produces({"application/xml", "application/json"})
+    public Utilisateurs findByArticle(@PathParam("id") long id) {
+        return super.find(id).getUtilisateur();
+    }
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Long id) {
@@ -73,9 +78,9 @@ public class ArticlesFacadeREST extends AbstractFacade<Articles> {
     }
     
     @GET
-    @Path("utilisateur/{id}")
+    @Path("utilisateur/idArticle/{id}")
     @Produces({"application/xml", "application/json"})
-    public Utilisateurs findUtilisateur(@PathParam("id") Long id) {
+    public Utilisateurs findUtilisateurCourant(@PathParam("id") Long id) {
         return super.find(id).getUtilisateur();
     }
     

@@ -31,7 +31,6 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Roles implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,7 +41,7 @@ public class Roles implements Serializable {
     @Size(max = 255)
     @Column(name = "NAME")
     private String name;
-    @OneToMany(mappedBy = "roleId",cascade=CascadeType.PERSIST)
+    @OneToMany(mappedBy = "roleId",cascade=CascadeType.ALL)
     private Collection<Utilisateurs> utilisateursCollection;
 
     public Roles() {

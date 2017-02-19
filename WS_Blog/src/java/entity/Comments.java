@@ -46,10 +46,10 @@ public class Comments implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date commentedDate;
     @JoinColumn(name = "UTILISATEUR_ID", referencedColumnName = "ID")
-    @ManyToOne(cascade=CascadeType.PERSIST)
+    @ManyToOne(cascade=CascadeType.MERGE)
     private Utilisateurs utilisateur;
     @JoinColumn(name = "ARTICLE_ID", referencedColumnName = "ID")
-    @ManyToOne(cascade=CascadeType.PERSIST)
+    @ManyToOne(cascade=CascadeType.MERGE)
     private Articles articleId;
 
     public Comments() {
